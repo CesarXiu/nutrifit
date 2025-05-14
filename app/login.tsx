@@ -40,7 +40,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onSwitchToRegister }) => {
     <ScrollView
       contentContainerStyle={{ flexGrow: 1, paddingVertical: 20 }} // Añadido paddingVertical para más espacio
       keyboardShouldPersistTaps="handled"
-      className="bg-blue-100">
+      className="bg-gradient-to-b from-blue-100 to-green-100">
       <View className="flex-1 justify-center p-6">
         <View className="w-full max-w-md self-center rounded-xl bg-white p-8 shadow-lg">
           <Text className="mb-8 text-center text-3xl font-bold text-gray-800"> {/* Cambiado mb-6 a mb-8 */}

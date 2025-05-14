@@ -1,21 +1,71 @@
-// app/index.tsx
-import { View, Text, TouchableOpacity } from 'react-native';
-import { Link } from 'expo-router';
+import React, { useState, useEffect } from 'react'
+import { View } from 'react-native'
+import Login from './login'
+import Register from './register'
+import UserOnboarding from './userOnboarding'
+import MainScreen from './main'
+// import { useAuthStore } from './stores/authStore'
+import Toast from 'react-native-toast-message'
 
-export default function Home() {
+function App() {
+  const [currentScreen, setCurrentScreen] = useState<'login' | 'register' | 'onboarding' | 'main'>('login')
+  // const { user, checkAuth } = useAuthStore()
+
+  useEffect(() => {
+    // checkAuth()
+  }, [])
+
+  // useEffect(() => {
+  //   if (user) {
+  //     setCurrentScreen('main')
+  //   }
+  // }, [user])
+
+  const handleLogin = () => {
+    setCurrentScreen('main')
+  }
+
+  const handleRegister = (email: string) => {
+    setCurrentScreen('onboarding')
+  }
+
+  const handleOnboardingComplete = () => {
+    setCurrentScreen('main')
+  }
+
+  const handleLogout = () => {
+    setCurrentScreen('login')
+  }
+
   return (
-    <View className="flex-1 items-center justify-center bg-white">
-      <Text className="text-xl font-bold">Pantalla Principal</Text>
-      <Link href="/explore" asChild>
-        <TouchableOpacity className="mt-4 px-4 py-2 bg-blue-500 rounded">
-          <Text className="text-white">Ir a Explorar</Text>
-        </TouchableOpacity>
-      </Link>
-      <Link href="/login" asChild>
-        <TouchableOpacity className="mt-4 px-4 py-2 bg-blue-500 rounded">
-          <Text className="text-white">Ir al Login</Text>
-        </TouchableOpacity>
-      </Link>
+    <View className="flex-1 bg-gradient-to-b from-blue-100 to-green-100">
+      {/* Componente Toast para notificaciones */}
+      <Toast />
+      
+      {/* Navegación entre pantallas */}
+      {currentScreen === 'login' && (
+        <Login 
+          onLogin={handleLogin}
+          onSwitchToRegister={() => setCurrentScreen('register')}
+        />
+      )}
+      
+      {currentScreen === 'register' && (
+        <Register
+          onRegister={handleRegister}
+          onSwitchToLogin={() => setCurrentScreen('login')}
+        />
+      )}
+      
+      {currentScreen === 'onboarding' && (
+        <UserOnboarding onComplete={handleOnboardingComplete} />
+      )}
+      
+      {currentScreen === 'main' && (
+        <MainScreen onLogout={handleLogout} />
+      )}
     </View>
-  );
+  )
 }
+
+export default App
