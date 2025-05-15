@@ -19,10 +19,12 @@ const Login: React.FC<LoginProps> = ({ onLogin, onSwitchToRegister }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  console.log(onLogin);
 
   const handleSubmit = async () => {
     try {
       setLoading(true);
+      console.log(onLogin);
       onLogin();
     } catch (error) {
       console.error('Error en el inicio de sesión:', error);
@@ -137,7 +139,10 @@ const Login: React.FC<LoginProps> = ({ onLogin, onSwitchToRegister }) => {
             </View>
 
             <TouchableOpacity
-              onPress={onSwitchToRegister}
+              onPress={() => {
+                console.log('Switch to Register pressed');
+                onSwitchToRegister();
+              }}
               disabled={loading}
               className="mt-6 w-full rounded-lg border border-blue-600 bg-white px-4 py-3 text-blue-600 shadow-sm disabled:opacity-50">
               <Text className="text-center text-blue-600">Registrarse</Text>

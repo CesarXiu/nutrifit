@@ -36,7 +36,6 @@ function App() {
   const handleLogout = () => {
     setCurrentScreen('login')
   }
-
   return (
     <View className="flex-1 bg-gradient-to-b from-blue-100 to-green-100">
       {/* Componente Toast para notificaciones */}
@@ -45,8 +44,14 @@ function App() {
       {/* Navegación entre pantallas */}
       {currentScreen === 'login' && (
         <Login 
-          onLogin={handleLogin}
-          onSwitchToRegister={() => setCurrentScreen('register')}
+          onLogin={() => {
+            console.log('Login button pressed')
+            handleLogin()
+          }}
+          onSwitchToRegister={() => {
+            console.log('Switch to Register button pressed')
+            setCurrentScreen('register')
+          }}
         />
       )}
       

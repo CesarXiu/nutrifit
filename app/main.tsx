@@ -25,10 +25,10 @@ import {
 // import WeeklyMealPlanner from './WeeklyMealPlanner';
 // import ExerciseTracker from './ExerciseTracker';
 // import Wellness from './Wellness';
-// import DailyMealTracking from './DailyMealTracking';
-// import WaterTracker from './WaterTracker';
-// import ProgressChart from './ProgressChart';
-// import Recipes from './Recipes';
+import DailyMealTracking from './main/dailyMealTracking';
+import WaterTracker from './main/waterTracker';
+import ProgressChart from './main/progressChart';
+import Recipes from './main/recipes';
 import Toast from 'react-native-toast-message';
 import Animated, { FadeIn, SlideInLeft, Easing } from 'react-native-reanimated';
 import WeeklyMealPlanner from './main/weeklyMealPlanner';
@@ -131,21 +131,21 @@ const MainScreen: React.FC<MainScreenProps> = ({ onLogout }) => {
             <Text className="mb-4 text-xl font-semibold">Resumen Diario</Text>
             <View className="mb-6 flex-col gap-4 lg:flex-row">
               <View className="mb-4 lg:mb-0 lg:flex-1">
-                {/* <DailyMealTracking /> */}
+                <DailyMealTracking />
               </View>
               <View className="lg:flex-1">
-                {/* <WaterTracker goal={goals?.water || 2000} userId={user?.id || ''} /> */}
+                <WaterTracker goal={goals?.water || 2000} userId={user?.id || ''} />
               </View>
             </View>
             <View>
-              {/* <ProgressChart /> */}
+              <ProgressChart />
             </View>
           </View>
         );
       case 'planificador':
         return goals ? <WeeklyMealPlanner goals={goals} />: null; //<WeeklyMealPlanner goals={goals} />
       case 'recetas':
-        return <p>WeeklyMealPlanner</p>; //<Recipes />
+        return <Recipes />; //
       case 'ejercicio':
         return <p>ExerciseTracker</p>; //<ExerciseTracker />
       case 'bienestar':
