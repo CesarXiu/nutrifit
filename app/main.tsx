@@ -32,6 +32,7 @@ import Recipes from './main/recipes';
 import Toast from 'react-native-toast-message';
 import Animated, { FadeIn, SlideInLeft, Easing } from 'react-native-reanimated';
 import WeeklyMealPlanner from './main/weeklyMealPlanner';
+import ExerciseTracker from './main/exerciesTracker';
 
 interface MainScreenProps {
   onLogout: () => void;
@@ -147,7 +148,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ onLogout }) => {
       case 'recetas':
         return <Recipes />; //
       case 'ejercicio':
-        return <p>ExerciseTracker</p>; //<ExerciseTracker />
+        return <ExerciseTracker />; //
       case 'bienestar':
         return <p>Wellness</p>; //<Wellness />
       default:
