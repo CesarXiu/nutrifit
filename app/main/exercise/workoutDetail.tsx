@@ -86,69 +86,72 @@ const WorkoutDetail: React.FC<WorkoutDetailProps> = ({ routine, onBack, onStartW
   }
 
   return (
-    <ScrollView className="flex-1 rounded-lg bg-white p-6 shadow-md">
+    <ScrollView className="flex-1 rounded-lg bg-white p-6 shadow-md h-full w-full">
       <View className="mb-6 flex-row items-center justify-between">
-        <TouchableOpacity onPress={onBack} className="flex-row items-center">
-          <Feather name="chevron-left" size={20} color="#4b5563" className="mr-1" />
-          <Text className="font-medium text-gray-600">Volver</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={onStartWorkout}
-          className="flex-row items-center rounded-lg bg-green-500 px-4 py-2">
-          <Feather name="play" size={20} color="#fff" className="mr-2" />
-          <Text className="font-medium text-white">Comenzar</Text>
-        </TouchableOpacity>
+      <TouchableOpacity onPress={onBack} className="flex-row items-center">
+        <Feather name="chevron-left" size={20} color="#4b5563" className="mr-1" />
+        <Text className="font-medium text-gray-600">Volver</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={onStartWorkout}
+        className="flex-row items-center rounded-lg bg-green-500 px-4 py-2">
+        <Feather name="play" size={20} color="#fff" className="mr-2" />
+        <Text className="font-medium text-white">Comenzar</Text>
+      </TouchableOpacity>
       </View>
 
       <View className="mb-6">
-        <Text className="mb-2 text-2xl font-bold">{routine.name}</Text>
-        <Text className="mb-4 text-gray-600">{routine.description}</Text>
-        <View className="flex-row space-x-4">
-          <View className="flex-row items-center">
-            <Feather name="clock" size={20} color="#4b5563" className="mr-1" />
-            <Text className="text-gray-600">{routine.estimated_duration} min</Text>
-          </View>
-          <View className="flex-row items-center">
-            <MaterialCommunityIcons name="fire" size={20} color="#4b5563" className="mr-1" />
-            <Text className="text-gray-600">{routine.calories_burned} kcal</Text>
-          </View>
+      <Text className="mb-2 text-2xl font-bold">{routine.name}</Text>
+      <Text className="mb-4 text-gray-600">{routine.description}</Text>
+      <View className="flex-row space-x-4">
+        <View className="flex-row items-center">
+        <Feather name="clock" size={20} color="#4b5563" className="mr-1" />
+        <Text className="text-gray-600">{routine.estimated_duration} min</Text>
         </View>
+        <View className="flex-row items-center">
+        <MaterialCommunityIcons name="fire" size={20} color="#4b5563" className="mr-1" />
+        <Text className="text-gray-600">{routine.calories_burned} kcal</Text>
+        </View>
+      </View>
       </View>
 
       <View className="space-y-4">
-        <Text className="mb-4 text-lg font-semibold">Ejercicios</Text>
-        {exercises.map((exercise: RoutineExercise, index: number) => (
-          <View key={exercise.id} className="mb-2 flex-row items-start rounded-lg bg-gray-50 p-4">
-            <View className="mr-4 h-10 w-10 items-center justify-center rounded-full bg-blue-100">
-              <Text className="text-lg font-semibold text-blue-600">{index + 1}</Text>
-            </View>
-            <View className="flex-1">
-              <Text className="mb-1 font-medium">{exercise.exercise?.name}</Text>
-              <Text className="mb-2 text-sm text-gray-600">{exercise.exercise?.description}</Text>
-              <View className="flex-row flex-wrap items-center space-x-4">
-                <View className="flex-row items-center">
-                  <MaterialCommunityIcons
-                    name="dumbbell"
-                    size={16}
-                    color="#4b5563"
-                    className="mr-1"
-                  />
-                  <Text className="text-gray-600">{exercise.sets} series</Text>
-                </View>
-                {exercise.reps ? (
-                  <Text className="text-gray-600">{exercise.reps} repeticiones</Text>
-                ) : null}
-                {exercise.duration ? (
-                  <View className="flex-row items-center">
-                    <Feather name="clock" size={16} color="#4b5563" className="mr-1" />
-                    <Text className="text-gray-600">{exercise.duration} seg</Text>
-                  </View>
-                ) : null}
-                <Text className="text-gray-600">Descanso: {exercise.rest_time} seg</Text>
-              </View>
-            </View>
+      <Text className="mb-4 text-lg font-semibold">Ejercicios</Text>
+      {exercises.map((exercise: RoutineExercise, index: number) => (
+        <View
+        key={exercise.id}
+        className="mb-2 flex-row items-start rounded-lg bg-gray-50 p-4 min-h-[80px] min-w-[200px]"
+        >
+        <View className="mr-4 h-10 w-10 min-h-[40px] min-w-[40px] items-center justify-center rounded-full bg-blue-100">
+          <Text className="text-lg font-semibold text-blue-600">{index + 1}</Text>
+        </View>
+        <View className="flex-1 min-h-[40px] min-w-[100px]">
+          <Text className="mb-1 font-medium">{exercise.exercise?.name}</Text>
+          <Text className="mb-2 text-sm text-gray-600">{exercise.exercise?.description}</Text>
+          <View className="flex-row flex-wrap items-center space-x-4">
+          <View className="flex-row items-center">
+            <MaterialCommunityIcons
+            name="dumbbell"
+            size={16}
+            color="#4b5563"
+            className="mr-1"
+            />
+            <Text className="text-gray-600">{exercise.sets} series</Text>
           </View>
-        ))}
+          {exercise.reps ? (
+            <Text className="text-gray-600">{exercise.reps} repeticiones</Text>
+          ) : null}
+          {exercise.duration ? (
+            <View className="flex-row items-center">
+            <Feather name="clock" size={16} color="#4b5563" className="mr-1" />
+            <Text className="text-gray-600">{exercise.duration} seg</Text>
+            </View>
+          ) : null}
+          <Text className="text-gray-600">Descanso: {exercise.rest_time} seg</Text>
+          </View>
+        </View>
+        </View>
+      ))}
       </View>
     </ScrollView>
   );

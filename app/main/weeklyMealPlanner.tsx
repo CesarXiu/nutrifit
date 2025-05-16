@@ -51,6 +51,15 @@ const WeeklyMealPlanner: React.FC<WeeklyMealPlannerProps> = ({ goals }) => {
   const deleteMeal = async (mealId: string) => {};
 
   const daysOfWeek = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+  const dayColors = [
+  'bg-blue-100',
+  'bg-green-100',
+  'bg-yellow-100',
+  'bg-purple-100',
+  'bg-pink-100',
+  'bg-orange-100',
+  'bg-teal-100',
+];
   const mealTypes = ['breakfast', 'lunch', 'dinner'] as const;
   const mealTypeLabels = {
     breakfast: 'Desayuno',
@@ -273,95 +282,126 @@ const WeeklyMealPlanner: React.FC<WeeklyMealPlannerProps> = ({ goals }) => {
     );
   };
 
+  const [expandedDays, setExpandedDays] = useState<{ [key: string]: boolean }>(() =>
+    Object.fromEntries(daysOfWeek.map((day) => [day, false]))
+  );
+
+  const toggleDay = (day: string) => {
+    setExpandedDays((prev) => ({
+      ...prev,
+      [day]: !prev[day],
+    }));
+  };
+
   return (
-    <View className="space-y-6 p-4">
-      <View className="flex-row items-center justify-between">
-        <Text className="text-xl font-semibold">Planificador Semanal de Comidas</Text>
-        <TouchableOpacity
-          onPress={() => console.log('Exportar Plan')}
-          disabled={isExporting}
-          className="flex-row items-center rounded-lg bg-green-500 px-4 py-2">
-          {isExporting ? (
-            <ActivityIndicator color="white" className="mr-2" />
-          ) : (
-            <MaterialIcons name="file-download" size={20} color="white" className="mr-2" />
-          )}
-          <Text className="text-white">Exportar Plan</Text>
-        </TouchableOpacity>
-      </View>
+  <View className="space-y-6 p-4">
+    <Text className="text-xl font-semibold">Planificador Semanal de Comidas</Text>
+    <View className="mt-2 mb-2">
+      <TouchableOpacity
+        onPress={() => console.log('Exportar Plan')}
+        disabled={isExporting}
+        className="flex-row items-center rounded-lg bg-green-500 px-4 py-2"
+      >
+        {isExporting ? (
+          <ActivityIndicator color="white" className="mr-2" />
+        ) : (
+          <MaterialIcons name="file-download" size={20} color="white" className="mr-2" />
+        )}
+        <Text className="text-white">Exportar Plan</Text>
+      </TouchableOpacity>
+    </View>
 
-      <ScrollView className="space-y-6">
-        {daysOfWeek.map((day) => {
-          const dayTotals = calculateDayTotals(weekPlan[day]);
-          const progress = (dayTotals.calories / goals.calories) * 100;
+    <ScrollView className="space-y-6">
+      {daysOfWeek.map((day, idx) => {
+        const dayTotals = calculateDayTotals(weekPlan[day]);
+        const progress = (dayTotals.calories / goals.calories) * 100;
+        const isExpanded = expandedDays[day];
+        const dayBg = dayColors[idx % dayColors.length];
 
-          return (
-            <View key={`day-${day}`} className="rounded-lg bg-white p-4 shadow-md">
-              <View className="mb-4 flex-row items-center justify-between">
-                <Text className="text-lg font-semibold">{day}</Text>
-                <Text className="text-sm text-gray-500">
+        return (
+          <View key={`day-${day}`} className={`rounded-lg p-4 shadow-md mb-2 ${dayBg}`}>
+            {/* Encabezado colapsable */}
+            <TouchableOpacity
+              className="mb-4 flex-row items-center justify-between"
+              onPress={() => toggleDay(day)}
+              activeOpacity={0.7}
+            >
+              <Text className="text-lg font-semibold">{day}</Text>
+              <View className="flex-row items-center">
+                <Text className="text-sm text-gray-500 mr-2">
                   {dayTotals.calories} / {goals.calories} kcal
                 </Text>
-              </View>
-
-              <View className="mb-4 h-2 rounded-full bg-gray-200">
-                <View
-                  className={`h-full rounded-full ${
-                    progress > 100 ? 'bg-red-500' : 'bg-green-500'
-                  }`}
-                  style={{ width: `${Math.min(progress, 100)}%` }}
+                <MaterialIcons
+                  name={isExpanded ? 'expand-less' : 'expand-more'}
+                  size={24}
+                  color="#888"
                 />
               </View>
+            </TouchableOpacity>
 
-              <View className="flex-col gap-4 md:flex-row lg:flex-row">
-                <MealCard
-                  title="Desayuno"
-                  meal={weekPlan[day].breakfast}
-                  onAddMeal={() => handleAddMeal(day, 'breakfast')}
-                  onRemoveMeal={() => handleRemoveMeal(day, 'breakfast')}
-                />
-                <MealCard
-                  title="Almuerzo"
-                  meal={weekPlan[day].lunch}
-                  onAddMeal={() => handleAddMeal(day, 'lunch')}
-                  onRemoveMeal={() => handleRemoveMeal(day, 'lunch')}
-                />
-                <MealCard
-                  title="Cena"
-                  meal={weekPlan[day].dinner}
-                  onAddMeal={() => handleAddMeal(day, 'dinner')}
-                  onRemoveMeal={() => handleRemoveMeal(day, 'dinner')}
-                />
-              </View>
+            {/* Contenido colapsable */}
+            {isExpanded && (
+              <>
+                <View className="mb-4 h-2 rounded-full bg-gray-200">
+                  <View
+                    className={`h-full rounded-full ${
+                      progress > 100 ? 'bg-red-500' : 'bg-green-500'
+                    }`}
+                    style={{ width: `${Math.min(progress, 100)}%` }}
+                  />
+                </View>
 
-              <View className="mt-4 flex-row flex-wrap gap-2">
-                <View className="min-w-[120px] flex-1 rounded bg-blue-50 p-2">
-                  <Text className="text-blue-700">Proteínas</Text>
-                  <Text className="font-medium">{dayTotals.protein}g</Text>
+                <View className="flex-col gap-4 md:flex-row lg:flex-row">
+                  <MealCard
+                    title="Desayuno"
+                    meal={weekPlan[day].breakfast}
+                    onAddMeal={() => handleAddMeal(day, 'breakfast')}
+                    onRemoveMeal={() => handleRemoveMeal(day, 'breakfast')}
+                  />
+                  <MealCard
+                    title="Almuerzo"
+                    meal={weekPlan[day].lunch}
+                    onAddMeal={() => handleAddMeal(day, 'lunch')}
+                    onRemoveMeal={() => handleRemoveMeal(day, 'lunch')}
+                  />
+                  <MealCard
+                    title="Cena"
+                    meal={weekPlan[day].dinner}
+                    onAddMeal={() => handleAddMeal(day, 'dinner')}
+                    onRemoveMeal={() => handleRemoveMeal(day, 'dinner')}
+                  />
                 </View>
-                <View className="min-w-[120px] flex-1 rounded bg-green-50 p-2">
-                  <Text className="text-green-700">Carbohidratos</Text>
-                  <Text className="font-medium">{dayTotals.carbs}g</Text>
-                </View>
-                <View className="min-w-[120px] flex-1 rounded bg-yellow-50 p-2">
-                  <Text className="text-yellow-700">Grasas</Text>
-                  <Text className="font-medium">{dayTotals.fat}g</Text>
-                </View>
-                <View className="min-w-[120px] flex-1 rounded bg-purple-50 p-2">
-                  <Text className="text-purple-700">Total</Text>
-                  <Text className="font-medium">{dayTotals.calories} kcal</Text>
-                </View>
-              </View>
-            </View>
-          );
-        })}
-      </ScrollView>
 
-      {showMealSelector && (
-        <MealSelector onSelect={handleMealSelect} onClose={() => setShowMealSelector(false)} />
-      )}
-    </View>
-  );
+                <View className="mt-4 flex-row flex-wrap gap-2">
+                  <View className="min-w-[120px] flex-1 rounded bg-blue-50 p-2">
+                    <Text className="text-blue-700">Proteínas</Text>
+                    <Text className="font-medium">{dayTotals.protein}g</Text>
+                  </View>
+                  <View className="min-w-[120px] flex-1 rounded bg-green-50 p-2">
+                    <Text className="text-green-700">Carbohidratos</Text>
+                    <Text className="font-medium">{dayTotals.carbs}g</Text>
+                  </View>
+                  <View className="min-w-[120px] flex-1 rounded bg-yellow-50 p-2">
+                    <Text className="text-yellow-700">Grasas</Text>
+                    <Text className="font-medium">{dayTotals.fat}g</Text>
+                  </View>
+                  <View className="min-w-[120px] flex-1 rounded bg-purple-50 p-2">
+                    <Text className="text-purple-700">Total</Text>
+                    <Text className="font-medium">{dayTotals.calories} kcal</Text>
+                  </View>
+                </View>
+              </>
+            )}
+          </View>
+        );
+      })}
+    </ScrollView>
+
+    {showMealSelector && (
+      <MealSelector onSelect={handleMealSelect} onClose={() => setShowMealSelector(false)} />
+    )}
+  </View>
+);
 };
 
 export default WeeklyMealPlanner;

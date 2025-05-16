@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import { View, Text, ActivityIndicator, ScrollView } from 'react-native';
 import { MaterialCommunityIcons, Feather, FontAwesome5 } from '@expo/vector-icons';
 // import { useWorkoutGoalsStore } from '../../stores/workoutGoalsStore';
 // import { useUserProfileStore } from '../../stores/userProfileStore';
@@ -66,72 +67,77 @@ const WorkoutGoalsForm: React.FC = () => {
 
   if (!goals) {
     return (
-      <div className="rounded-lg bg-white p-6 shadow-md">
-        <div className="mb-6 flex items-center">
+      <View className="rounded-lg bg-white p-6 shadow-md">
+        <View className="mb-6 flex-row items-center">
           <MaterialCommunityIcons
             name="target"
             size={24}
             color="#3B82F6"
             style={{ marginRight: 8 }}
           />
-          <h2 className="text-xl font-semibold">Objetivos de Entrenamiento</h2>
-        </div>
-        <p className="text-center text-gray-500">Cargando objetivos...</p>
-      </div>
+          <Text className="text-xl font-semibold">Objetivos de Entrenamiento</Text>
+        </View>
+        <ActivityIndicator size="small" color="#3B82F6" />
+        <Text className="mt-2 text-center text-gray-500">Cargando objetivos...</Text>
+      </View>
     );
   }
 
   return (
-    <div className="rounded-lg bg-white p-6 shadow-md">
-      <div className="mb-6 flex items-center">
+    <ScrollView className="rounded-lg bg-white p-6 shadow-md">
+      <View className="mb-6 flex-row items-center">
         <MaterialCommunityIcons
           name="target"
           size={24}
           color="#3B82F6"
           style={{ marginRight: 8 }}
         />
-        <h2 className="text-xl font-semibold">Objetivos de Entrenamiento</h2>
-      </div>
+        <Text className="text-xl font-semibold">Objetivos de Entrenamiento</Text>
+      </View>
 
-      <div className="space-y-6">
-        <div className="rounded-lg bg-blue-50 p-4">
-          <div className="mb-2 flex items-center">
+      <View className="space-y-6">
+        <View className="rounded-lg bg-blue-50 p-4">
+          <View className="mb-2 flex-row items-center">
             <Feather name="activity" size={20} color="#3B82F6" style={{ marginRight: 8 }} />
-            <h3 className="font-medium text-blue-800">Frecuencia Semanal</h3>
-          </div>
-          <p className="text-2xl font-bold text-blue-600">{goals.workouts_per_week}</p>
-          <p className="text-sm text-blue-600">entrenamientos por semana</p>
-        </div>
+            <Text className="font-medium text-blue-800">Frecuencia Semanal</Text>
+          </View>
+          <Text className="text-2xl font-bold text-blue-600">{goals.workouts_per_week}</Text>
+          <Text className="text-sm text-blue-600">entrenamientos por semana</Text>
+        </View>
 
-        <div className="rounded-lg bg-green-50 p-4">
-          <div className="mb-2 flex items-center">
+        <View className="rounded-lg bg-green-50 p-4">
+          <View className="mb-2 flex-row items-center">
             <Feather name="clock" size={20} color="#22C55E" style={{ marginRight: 8 }} />
-            <h3 className="font-medium text-green-800">Duración</h3>
-          </div>
-          <p className="text-2xl font-bold text-green-600">{goals.minutes_per_workout}</p>
-          <p className="text-sm text-green-600">minutos por sesión</p>
-        </div>
+            <Text className="font-medium text-green-800">Duración</Text>
+          </View>
+          <Text className="text-2xl font-bold text-green-600">{goals.minutes_per_workout}</Text>
+          <Text className="text-sm text-green-600">minutos por sesión</Text>
+        </View>
 
-        <div className="rounded-lg bg-red-50 p-4">
-          <div className="mb-2 flex items-center">
+        <View className="rounded-lg bg-red-50 p-4">
+          <View className="mb-2 flex-row items-center">
             <FontAwesome5 name="fire" size={20} color="#EF4444" style={{ marginRight: 8 }} />
-            <h3 className="font-medium text-red-800">Gasto Calórico</h3>
-          </div>
-          <p className="text-2xl font-bold text-red-600">{goals.calories_per_week}</p>
-          <p className="text-sm text-red-600">calorías por semana</p>
-        </div>
+            <Text className="font-medium text-red-800">Gasto Calórico</Text>
+          </View>
+          <Text className="text-2xl font-bold text-red-600">{goals.calories_per_week}</Text>
+          <Text className="text-sm text-red-600">calorías por semana</Text>
+        </View>
 
-        <div className="rounded-lg bg-gray-50 p-4">
-          <h4 className="mb-2 font-medium">Recomendaciones</h4>
-          <ul className="space-y-2 text-sm text-gray-600">
-            <li>• Mantén al menos un día de descanso entre entrenamientos</li>
-            <li>• Incluye ejercicios de calentamiento y estiramiento</li>
-            <li>• Aumenta gradualmente la intensidad</li>
-            <li>• Mantén una buena hidratación</li>
-          </ul>
-        </div>
-      </div>
-    </div>
+        <View className="rounded-lg bg-gray-50 p-4">
+          <Text className="mb-2 font-medium">Recomendaciones</Text>
+          <View className="space-y-2">
+            <Text className="text-sm text-gray-600">
+              • Mantén al menos un día de descanso entre entrenamientos
+            </Text>
+            <Text className="text-sm text-gray-600">
+              • Incluye ejercicios de calentamiento y estiramiento
+            </Text>
+            <Text className="text-sm text-gray-600">• Aumenta gradualmente la intensidad</Text>
+            <Text className="text-sm text-gray-600">• Mantén una buena hidratación</Text>
+          </View>
+        </View>
+      </View>
+    </ScrollView>
   );
 };
 

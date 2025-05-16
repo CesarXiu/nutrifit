@@ -326,7 +326,7 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ onFinish }) => {
             <Ionicons name="arrow-back" size={20} color="#4b5563" />
             <Text className="ml-2 font-medium text-gray-600">Volver</Text>
           </TouchableOpacity>
-          <Text className="text-xl font-semibold">Entrenamiento en Progreso</Text>
+          <Text className="text-m font-semibold">Entrenamiento en Progreso</Text>
         </View>
 
         <View className="mb-8 rounded-lg bg-gray-100 p-6">
@@ -348,13 +348,13 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ onFinish }) => {
           <Text className="mb-2 text-center text-xl font-semibold">
             {isResting ? 'Descanso' : currentExerciseData?.exercise?.name || 'Preparado'}
           </Text>
-          <View className="mb-4 flex-row items-center justify-center space-x-4">
+            <View className="mb-4 flex items-center justify-center">
             <Text className="text-3xl font-bold text-blue-600">{formatTime(seconds)}</Text>
-            <Text className="flex-row items-center text-sm text-gray-500">
+            <View className="flex-row items-center mt-2">
               <Feather name="clock" size={16} color="#6b7280" />
-              <Text> {formatTime(restDuration - seconds)} restante</Text>
-            </Text>
-          </View>
+              <Text className="text-sm text-gray-500 ml-1">{formatTime(restDuration - seconds)} restante</Text>
+            </View>
+            </View>
 
           <View className="mb-6 h-3 w-full rounded-full bg-gray-200">
             <View
@@ -363,43 +363,50 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ onFinish }) => {
             />
           </View>
 
-          <View className="flex-row items-center justify-center space-x-3">
-            <TouchableOpacity
+            <View className="space-y-3">
+            {/* Primera fila: Flecha izquierda, Play/Pause, Flecha derecha */}
+            <View className="flex-row items-center justify-center">
+              <TouchableOpacity
               onPress={handlePreviousExercise}
               disabled={currentExercise === 0}
-              className={`rounded-full p-4 ${currentExercise === 0 ? 'bg-gray-300' : 'bg-gray-500'} ${currentExercise === 0 ? '' : 'active:bg-gray-600'}`}>
+              className={`rounded-full p-4 mx-6 ${currentExercise === 0 ? 'bg-gray-300' : 'bg-gray-500'} ${currentExercise === 0 ? '' : 'active:bg-gray-600'}`}>
               <Feather name="chevron-left" size={24} color="#fff" />
-            </TouchableOpacity>
+              </TouchableOpacity>
 
-            <TouchableOpacity
+              <TouchableOpacity
               onPress={toggleTimer}
-              className={`rounded-full p-4 ${isRunning ? 'bg-red-500' : 'bg-green-500'} active:bg-opacity-80`}>
+              className={`rounded-full p-4 mx-6 ${isRunning ? 'bg-red-500' : 'bg-green-500'} active:bg-opacity-80`}>
               {isRunning ? (
                 <Feather name="pause" size={24} color="#fff" />
               ) : (
                 <Feather name="play" size={24} color="#fff" />
               )}
-            </TouchableOpacity>
+              </TouchableOpacity>
 
-            <TouchableOpacity
-              onPress={resetTimer}
-              className="rounded-full bg-gray-500 p-4 active:bg-gray-600">
-              <Feather name="rotate-ccw" size={24} color="#fff" />
-            </TouchableOpacity>
-
-            <TouchableOpacity
+              <TouchableOpacity
               onPress={handleNextExercise}
               disabled={currentExercise === exercises.length - 1}
-              className={`rounded-full p-4 ${currentExercise === exercises.length - 1 ? 'bg-gray-300' : 'bg-gray-500'} ${currentExercise === exercises.length - 1 ? '' : 'active:bg-gray-600'}`}>
+              className={`rounded-full p-4 mx-6 ${currentExercise === exercises.length - 1 ? 'bg-gray-300' : 'bg-gray-500'} ${currentExercise === exercises.length - 1 ? '' : 'active:bg-gray-600'}`}>
               <Feather name="chevron-right" size={24} color="#fff" />
-            </TouchableOpacity>
+              </TouchableOpacity>
+            </View>
+            {/* Segunda fila: Reiniciar y Completar */}
+            <View className="flex-row items-center justify-center">
+              <TouchableOpacity
+              onPress={resetTimer}
+              className="rounded-full bg-gray-500 p-4 mx-8 active:bg-gray-600"
+              >
+              <Feather name="rotate-ccw" size={24} color="#fff" />
+              </TouchableOpacity>
 
-            <TouchableOpacity
+              <TouchableOpacity
               onPress={handleFinishWorkout}
-              className="rounded-full bg-blue-500 p-4 active:bg-blue-600">
+              className="rounded-full bg-blue-500 p-4 mx-8 active:bg-blue-600"
+              >
               <Feather name="check-circle" size={24} color="#fff" />
-            </TouchableOpacity>
-          </View>
+              </TouchableOpacity>
+            </View>
+            </View>
         </View>
 
         <View className="space-y-4">
