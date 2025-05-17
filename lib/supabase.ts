@@ -1,5 +1,5 @@
 import 'react-native-url-polyfill/auto';
-import { AppState } from 'react-native'
+import { AppState } from 'react-native';
 import { createClient } from '@supabase/supabase-js';
 import Constants from 'expo-constants';
 import Toast from 'react-native-toast-message';
@@ -18,7 +18,9 @@ const supabaseKey =
   process.env.SUPABASE_KEY;
 
 if (!supabaseUrl || !supabaseKey) {
-  throw new Error('supabaseUrl y supabaseKey son requeridos. Revisa tu configuración de variables.');
+  throw new Error(
+    'supabaseUrl y supabaseKey son requeridos. Revisa tu configuración de variables.'
+  );
 }
 
 export const supabase = createClient(supabaseUrl, supabaseKey, {
@@ -32,7 +34,6 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
     fetch: (...args) => {
       return fetch(...args).catch((error) => {
         console.error('Supabase fetch error:', error);
-        // Solo mostrar el Toast si es un error de red real
         if (error.name === 'TypeError' && error.message === 'Failed to fetch') {
           Toast.show({
             type: 'error',
@@ -48,9 +49,7 @@ export const supabase = createClient(supabaseUrl, supabaseKey, {
     schema: 'public',
   },
   realtime: {
-    params: {
-      eventsPerSecond: 10,
-    },
+    enabled: false,
   },
 });
 
