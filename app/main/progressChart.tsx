@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import React, { useEffect, useRef } from 'react';
+import { View, Text, StyleSheet, ScrollView, Dimensions } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
-import { Dimensions } from 'react-native';
 import { useDailyTrackingStore } from '../../stores/dailyTrackingStore';
 import { useNutritionGoalsStore } from '../../stores/nutritionGoalsStore';
 import { useWaterIntakeStore } from '../../stores/waterIntakeStore';
@@ -9,6 +8,7 @@ import { useAuthStore } from '../../stores/authStore';
 import { getCurrentWeekDates, getWeekdayName } from '../../utils/dateUtils';
 
 const screenWidth = Dimensions.get('window').width;
+const chartWidth = 800; // Ancho fijo para permitir scroll horizontal
 
 const ProgressChart: React.FC = () => {
     const { weeklyTracking, getWeeklyTracking } = useDailyTrackingStore();
@@ -16,37 +16,10 @@ const ProgressChart: React.FC = () => {
     const { getWeeklyWaterIntake, weeklyWaterIntake } = useWaterIntakeStore();
     const { user } = useAuthStore();
 
-    // const weeklyTracking = [
-    //     { tracking_date: '2023-10-01', completed: true, calories: 2000, protein: 150, carbs: 250, fats: 70 },
-    //     { tracking_date: '2023-10-02', completed: true, calories: 1800, protein: 140, carbs: 230, fats: 60 },
-    //     { tracking_date: '2023-10-03', completed: true, calories: 2200, protein: 160, carbs: 270, fats: 80 },
-    //     { tracking_date: '2023-10-04', completed: true, calories: 2100, protein: 155, carbs: 260, fats: 75 },
-    //     { tracking_date: '2023-10-05', completed: true, calories: 1900, protein: 145, carbs: 240, fats: 65 },
-    //     { tracking_date: '2023-10-06', completed: true, calories: 2000, protein: 150, carbs: 250, fats: 70 },
-    //     { tracking_date: '2023-10-07', completed: true, calories: 2050, protein: 155, carbs: 255, fats: 72 }
-    // ];
-    // const weeklyWaterIntake = [
-    //     { tracking_date: '2023-10-01', amount: 2000 },
-    //     { tracking_date: '2023-10-02', amount: 2500 },
-    //     { tracking_date: '2023-10-03', amount: 2200 },
-    //     { tracking_date: '2023-10-04', amount: 2400 },
-    //     { tracking_date: '2023-10-05', amount: 2300 },
-    //     { tracking_date: '2023-10-06', amount: 2100 },
-    //     { tracking_date: '2023-10-07', amount: 2600 }
-    // ];
-    // const user = { id: 'user123' };
-    // const goals = { calories: 2000, protein: 150, carbs: 250, fats: 70, water: 3000 };
-
-    // const getWeeklyTracking = async (userId: string) => {
-    //     // Placeholder for fetching weekly tracking data
-    //     // const data = await fetchWeeklyTracking(userId);
-    //     // setWeeklyTracking(data);
-    // }
-    // const getWeeklyWaterIntake = async (userId: string) => {
-    //     // Placeholder for fetching weekly water intake data
-    //     // const data = await fetchWeeklyWaterIntake(userId);
-    //     // setWeeklyWaterIntake(data);
-    // }
+    // Refs para los ScrollView horizontales
+    const caloriesScrollRef = useRef<ScrollView>(null);
+    const macrosScrollRef = useRef<ScrollView>(null);
+    const waterScrollRef = useRef<ScrollView>(null);
 
     useEffect(() => {
         if (user) {
@@ -92,96 +65,141 @@ const ProgressChart: React.FC = () => {
         useShadowColorFromDataset: false,
     };
 
+    // Calcular el índice del día actual (0 = lunes, 6 = domingo)
+    const today = new Date();
+    let todayIndex = today.getDay() - 1; // getDay(): 0=domingo, 1=lunes...
+    if (todayIndex < 0) todayIndex = 6; // Si es domingo, poner al final
+
+    // Calcular el scroll inicial para que el día actual esté visible
+    const scrollToDay = (scrollRef: React.RefObject<ScrollView>) => {
+        // Espacio horizontal por día (aprox)
+        const dayWidth = chartWidth / 7;
+        // Centrar el día actual en la pantalla
+        const offset = Math.max(0, dayWidth * todayIndex - screenWidth / 2 + dayWidth / 2);
+        scrollRef.current?.scrollTo({ x: offset, animated: false });
+    };
+
+    useEffect(() => {
+        // Esperar a que el render termine antes de hacer scroll
+        setTimeout(() => {
+            scrollToDay(caloriesScrollRef);
+            scrollToDay(macrosScrollRef);
+            scrollToDay(waterScrollRef);
+        }, 300);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
     return (
         <ScrollView style={styles.container}>
             <View style={styles.chartContainer}>
                 <Text style={styles.title}>Calorías Diarias</Text>
-                <LineChart
-                    data={{
-                        labels,
-                        datasets: [
-                            {
-                                data: caloriesValues,
-                                color: (opacity = 1) => `rgba(75, 192, 192, ${opacity})`,
-                            },
-                            {
-                                data: Array(7).fill(goals?.calories || 0),
-                                color: (opacity = 1) => `rgba(75, 192, 192, 0.3)`,
-                                strokeDashArray: [5, 5],
-                            },
-                        ],
-                    }}
-                    width={screenWidth - 40}
-                    height={220}
-                    chartConfig={chartConfig}
-                    bezier
-                />
+                <ScrollView
+                    horizontal
+                    ref={caloriesScrollRef}
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={{ minWidth: chartWidth }}
+                >
+                    <LineChart
+                        data={{
+                            labels,
+                            datasets: [
+                                {
+                                    data: caloriesValues,
+                                    color: (opacity = 1) => `rgba(75, 192, 192, ${opacity})`,
+                                },
+                                {
+                                    data: Array(7).fill(goals?.calories || 0),
+                                    color: (opacity = 1) => `rgba(75, 192, 192, 0.3)`,
+                                    strokeDashArray: [5, 5],
+                                },
+                            ],
+                        }}
+                        width={chartWidth}
+                        height={220}
+                        chartConfig={chartConfig}
+                        bezier
+                    />
+                </ScrollView>
             </View>
 
             <View style={styles.chartContainer}>
                 <Text style={styles.title}>Macronutrientes</Text>
-                <LineChart
-                    data={{
-                        labels,
-                        datasets: [
-                            {
-                                data: proteinValues,
-                                color: (opacity = 1) => `rgba(54, 162, 235, ${opacity})`,
-                            },
-                            {
-                                data: carbsValues,
-                                color: (opacity = 1) => `rgba(255, 159, 64, ${opacity})`,
-                            },
-                            {
-                                data: fatsValues,
-                                color: (opacity = 1) => `rgba(255, 99, 132, ${opacity})`,
-                            },
-                            {
-                                data: Array(7).fill(goals?.protein || 0),
-                                color: (opacity = 1) => `rgba(54, 162, 235, 0.3)`,
-                                strokeDashArray: [5, 5],
-                            },
-                            {
-                                data: Array(7).fill(goals?.carbs || 0),
-                                color: (opacity = 1) => `rgba(255, 159, 64, 0.3)`,
-                                strokeDashArray: [5, 5],
-                            },
-                            {
-                                data: Array(7).fill(goals?.fats || 0),
-                                color: (opacity = 1) => `rgba(255, 99, 132, 0.3)`,
-                                strokeDashArray: [5, 5],
-                            },
-                        ],
-                    }}
-                    width={screenWidth - 40}
-                    height={220}
-                    chartConfig={chartConfig}
-                    bezier
-                />
+                <ScrollView
+                    horizontal
+                    ref={macrosScrollRef}
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={{ minWidth: chartWidth }}
+                >
+                    <LineChart
+                        data={{
+                            labels,
+                            datasets: [
+                                {
+                                    data: proteinValues,
+                                    color: (opacity = 1) => `rgba(54, 162, 235, ${opacity})`,
+                                },
+                                {
+                                    data: carbsValues,
+                                    color: (opacity = 1) => `rgba(255, 159, 64, ${opacity})`,
+                                },
+                                {
+                                    data: fatsValues,
+                                    color: (opacity = 1) => `rgba(255, 99, 132, ${opacity})`,
+                                },
+                                {
+                                    data: Array(7).fill(goals?.protein || 0),
+                                    color: (opacity = 1) => `rgba(54, 162, 235, 0.3)`,
+                                    strokeDashArray: [5, 5],
+                                },
+                                {
+                                    data: Array(7).fill(goals?.carbs || 0),
+                                    color: (opacity = 1) => `rgba(255, 159, 64, 0.3)`,
+                                    strokeDashArray: [5, 5],
+                                },
+                                {
+                                    data: Array(7).fill(goals?.fats || 0),
+                                    color: (opacity = 1) => `rgba(255, 99, 132, 0.3)`,
+                                    strokeDashArray: [5, 5],
+                                },
+                            ],
+                        }}
+                        width={chartWidth}
+                        height={220}
+                        chartConfig={chartConfig}
+                        bezier
+                    />
+                </ScrollView>
             </View>
 
             <View style={styles.chartContainer}>
                 <Text style={styles.title}>Consumo de Agua</Text>
-                <LineChart
-                    data={{
-                        labels,
-                        datasets: [
-                            {
-                                data: waterValues,
-                                color: (opacity = 1) => `rgba(59, 130, 246, ${opacity})`,
-                            },
-                            {
-                                data: Array(7).fill(goals?.water || 0),
-                                color: (opacity = 1) => `rgba(59, 130, 246, 0.3)`,
-                                strokeDashArray: [5, 5],
-                            },
-                        ],
-                    }}
-                    width={screenWidth - 40}
-                    height={220}
-                    chartConfig={chartConfig}
-                    bezier
-                />
+                <ScrollView
+                    horizontal
+                    ref={waterScrollRef}
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={{ minWidth: chartWidth }}
+                >
+                    <LineChart
+                        data={{
+                            labels,
+                            datasets: [
+                                {
+                                    data: waterValues,
+                                    color: (opacity = 1) => `rgba(59, 130, 246, ${opacity})`,
+                                },
+                                {
+                                    data: Array(7).fill(goals?.water || 0),
+                                    color: (opacity = 1) => `rgba(59, 130, 246, 0.3)`,
+                                    strokeDashArray: [5, 5],
+                                },
+                            ],
+                        }}
+                        width={chartWidth}
+                        height={220}
+                        chartConfig={chartConfig}
+                        bezier
+                    />
+                </ScrollView>
             </View>
         </ScrollView>
     );
