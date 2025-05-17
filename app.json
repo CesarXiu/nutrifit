@@ -3,15 +3,17 @@
     "name": "nutrifit-app",
     "slug": "nutrifit-app",
     "version": "1.0.0",
+    "extra": {
+      "supabaseUrl": "https://ohiwnouwumulnjhwjpuj.supabase.co",
+      "supabaseKey": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im9oaXdub3V3dW11bG5qaHdqcHVqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzEzNTIxODUsImV4cCI6MjA0NjkyODE4NX0.-8gd5-vRUSrb-_6ReUhA4HLv6zNKCY7S7u5aDclp3uo"
+    },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "experiments": {
       "tsconfigPaths": true
     },
-    "plugins": [
-      "expo-router"
-    ],
+    "plugins": ["expo-router"],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -20,9 +22,7 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },

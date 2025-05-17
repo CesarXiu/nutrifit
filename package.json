@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@expo/vector-icons": "^14.1.0",
+    "@react-native-async-storage/async-storage": "2.1.2",
+    "@supabase/supabase-js": "^2.49.4",
     "expo": "^53.0.9",
     "expo-router": "~5.0.6",
     "expo-status-bar": "~2.2.3",
@@ -23,10 +25,14 @@
     "react-native-reanimated": "~3.17.4",
     "react-native-safe-area-context": "5.4.0",
     "react-native-toast-message": "^2.3.0",
-    "react-native-web": "^0.20.0"
+    "react-native-url-polyfill": "^2.0.0",
+    "react-native-web": "^0.20.0",
+    "uuid": "^11.1.0",
+    "zustand": "^5.0.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
+    "@react-native-community/cli": "latest",
     "@types/react": "~19.0.10",
     "eslint": "^9.25.1",
     "eslint-config-expo": "^9.2.0",
@@ -34,8 +40,7 @@
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.5.11",
     "tailwindcss": "^3.4.0",
-    "typescript": "~5.8.3",
-    "@react-native-community/cli": "latest"
+    "typescript": "~5.8.3"
   },
   "main": "expo-router/entry",
   "private": true
