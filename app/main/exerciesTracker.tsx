@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Modal } from 'react-native';
+import Toast from 'react-native-toast-message';
 import { useExerciseStore } from '../../stores/exerciseStore';
 import { useWorkoutTrackingStore } from '../../stores/workoutTrackingStore';
 import { WorkoutRoutine } from '../../types/exercise';
@@ -8,47 +9,21 @@ import WorkoutTimer from './exercise/workoutTimer';
 import WorkoutDetail from './exercise/workoutDetail';
 import WorkoutList from './exercise/workoutList';
 import WorkoutGoalsForm from './exercise/workoutGoalsForm';
-// import WorkoutDashboard from './exercise/WorkoutDashboard';
-// import WorkoutList from './exercise/WorkoutList';
-// import WorkoutDetail from './exercise/WorkoutDetail';
-// import WorkoutTimer from './exercise/WorkoutTimer';
-// import WorkoutGoalsForm from './exercise/WorkoutGoalsForm';
 
 const ExerciseTracker: React.FC = () => {
   const [selectedRoutine, setSelectedRoutine] = useState<WorkoutRoutine | null>(null);
   const [isWorkoutActive, setIsWorkoutActive] = useState(false);
-  // const [routines, setRoutines] = useState<WorkoutRoutine[]>([]);
-  const { routines, fetchRoutines } = useExerciseStore();
-  const { currentWorkout } = useWorkoutTrackingStore();
-
-  // const fetchRoutines = async () => {
-  //   // Simulate fetching routines from a store or API
-  //   const fetchedRoutines: WorkoutRoutine[] = [
-  //     {
-  //       id: '1',
-  //       name: 'Rutina Cuerpo Completo',
-  //       description: 'Entrenamiento completo para todo el cuerpo.',
-  //       difficulty: 'intermedio',
-  //       estimated_duration: 60,
-  //       calories_burned: 500,
-  //       category: 'fuerza',
-  //     },
-  //     {
-  //       id: '2',
-  //       name: 'Cardio Explosivo',
-  //       description: 'Rutina de cardio de alta intensidad.',
-  //       difficulty: 'avanzado',
-  //       estimated_duration: 45,
-  //       calories_burned: 400,
-  //       category: 'cardio',
-  //     },
-  //   ];
-  //   setRoutines(fetchedRoutines);
-  // };
-  // const [currentWorkout, setCurrentWorkout] = useState<any>(null);
+  const { routines, fetchRoutines, error: exerciseError } = useExerciseStore();
+  const { currentWorkout, error: trackingError } = useWorkoutTrackingStore();
 
   useEffect(() => {
-    fetchRoutines();
+    fetchRoutines().catch((err) => {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: err?.message || 'Error al cargar las rutinas',
+      });
+    });
   }, []);
 
   useEffect(() => {
@@ -56,6 +31,26 @@ const ExerciseTracker: React.FC = () => {
       setIsWorkoutActive(true);
     }
   }, [currentWorkout]);
+
+  useEffect(() => {
+    if (exerciseError) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: exerciseError,
+      });
+    }
+  }, [exerciseError]);
+
+  useEffect(() => {
+    if (trackingError) {
+      Toast.show({
+        type: 'error',
+        text1: 'Error',
+        text2: trackingError,
+      });
+    }
+  }, [trackingError]);
 
   const handleSelectRoutine = (routine: WorkoutRoutine) => {
     setSelectedRoutine(routine);
@@ -75,22 +70,23 @@ const ExerciseTracker: React.FC = () => {
   };
 
   return (
-    <ScrollView className="flex-1 space-y-6 bg-gray-100 p-4">
+    <ScrollView className="flex-1 bg-gray-100 px-4 py-6 space-y-6">
       {/* Dashboard de progreso */}
       <WorkoutDashboard />
 
       {/* Contenido principal */}
-      <View className="flex flex-col gap-6 lg:flex-row">
-        {/* Lista de rutinas y detalles */}
-        <View className="flex-1">
+      <View className="flex flex-col space-y-6">
+        {/* Rutinas */}
+        <View className="w-full">
           {isWorkoutActive ? (
             <Modal
               visible={isWorkoutActive}
               transparent
               animationType="fade"
-              onRequestClose={handleFinishWorkout}>
-              <View className="flex-1 items-center justify-center">
-                  <WorkoutTimer onFinish={handleFinishWorkout} />
+              onRequestClose={handleFinishWorkout}
+            >
+              <View className="flex-1 items-center justify-center bg-black/50">
+                <WorkoutTimer onFinish={handleFinishWorkout} />
               </View>
             </Modal>
           ) : selectedRoutine ? (
@@ -98,26 +94,31 @@ const ExerciseTracker: React.FC = () => {
               visible={!!selectedRoutine}
               transparent
               animationType="fade"
-              onRequestClose={handleBack}>
-              <View className="flex-1 items-center justify-center">
-                  <WorkoutDetail
-                    routine={selectedRoutine}
-                    onBack={handleBack}
-                    onStartWorkout={handleStartWorkout}
-                  />
+              onRequestClose={handleBack}
+            >
+              <View className="flex-1 items-center justify-center bg-black/50">
+                <WorkoutDetail
+                  routine={selectedRoutine}
+                  onBack={handleBack}
+                  onStartWorkout={handleStartWorkout}
+                />
               </View>
             </Modal>
           ) : (
-            <View className="rounded-lg bg-white p-6 shadow-md">
-              <Text className="mb-6 text-xl font-semibold">Rutinas de Entrenamiento</Text>
+            <View className="rounded-2xl bg-white p-4 shadow space-y-4">
+              <Text className="text-xl font-semibold text-gray-800">
+                Rutinas de Entrenamiento
+              </Text>
               <WorkoutList routines={routines} onSelectRoutine={handleSelectRoutine} />
             </View>
           )}
         </View>
 
-        {/* Objetivos y estadísticas */}
-        <View className="mt-6 flex-1 lg:mt-0">
-          <WorkoutGoalsForm />
+        {/* Objetivos */}
+        <View className="w-full">
+          <View className="rounded-2xl bg-white p-4 shadow">
+            <WorkoutGoalsForm />
+          </View>
         </View>
       </View>
     </ScrollView>

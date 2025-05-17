@@ -18,6 +18,7 @@ interface WorkoutTrackingState {
   getWeeklyWorkouts: (userId: string) => Promise<void>;
   trackExercise: (workoutId: string, exerciseData: Omit<ExerciseTracking, 'id'>) => Promise<void>;
   getWorkoutExercises: (workoutId: string) => Promise<void>;
+  clearCurrentWorkout: () => void; // <-- Agrega esto
 }
 
 export const useWorkoutTrackingStore = create<WorkoutTrackingState>((set, get) => ({
@@ -31,7 +32,7 @@ export const useWorkoutTrackingStore = create<WorkoutTrackingState>((set, get) =
   startWorkout: async (userId: string, routineId?: string, userRoutineId?: string) => {
     try {
       set({ loading: true, error: null });
-      
+
       // Verificar si hay un entrenamiento activo
       const activeWorkout = get().currentWorkout;
       if (activeWorkout) {
@@ -44,14 +45,16 @@ export const useWorkoutTrackingStore = create<WorkoutTrackingState>((set, get) =
 
       const { data, error } = await supabase
         .from('workout_tracking')
-        .insert([{
-          user_id: userId,
-          routine_id: routineId,
-          user_routine_id: userRoutineId,
-          tracking_date: formatLocalDate(new Date()),
-          start_time: new Date().toISOString(),
-          completed: false
-        }])
+        .insert([
+          {
+            user_id: userId,
+            routine_id: routineId,
+            user_routine_id: userRoutineId,
+            tracking_date: formatLocalDate(new Date()),
+            start_time: new Date().toISOString(),
+            completed: false,
+          },
+        ])
         .select()
         .single();
 
@@ -73,18 +76,18 @@ export const useWorkoutTrackingStore = create<WorkoutTrackingState>((set, get) =
   endWorkout: async (workoutId: string, duration: number, caloriesBurned: number) => {
     try {
       set({ loading: true, error: null });
-      
+
       // Asegurarse de que los valores sean enteros
       const roundedDuration = Math.round(duration);
       const roundedCalories = Math.round(caloriesBurned);
-      
+
       const { data, error } = await supabase
         .from('workout_tracking')
         .update({
           end_time: new Date().toISOString(),
           duration: roundedDuration,
           calories_burned: roundedCalories,
-          completed: true
+          completed: true,
         })
         .eq('id', workoutId)
         .select()
@@ -93,14 +96,10 @@ export const useWorkoutTrackingStore = create<WorkoutTrackingState>((set, get) =
       if (error) throw error;
 
       // Actualizar los estados locales
-      set(state => ({
+      set((state) => ({
         currentWorkout: null,
-        todayWorkouts: state.todayWorkouts.map(w => 
-          w.id === workoutId ? data : w
-        ),
-        weeklyWorkouts: state.weeklyWorkouts.map(w =>
-          w.id === workoutId ? data : w
-        )
+        todayWorkouts: state.todayWorkouts.map((w) => (w.id === workoutId ? data : w)),
+        weeklyWorkouts: state.weeklyWorkouts.map((w) => (w.id === workoutId ? data : w)),
       }));
 
       Toast.show({
@@ -118,9 +117,9 @@ export const useWorkoutTrackingStore = create<WorkoutTrackingState>((set, get) =
   getTodayWorkouts: async (userId: string) => {
     try {
       set({ loading: true, error: null });
-      
+
       const today = formatLocalDate(new Date());
-      
+
       const { data, error } = await supabase
         .from('workout_tracking')
         .select('*')
@@ -146,7 +145,7 @@ export const useWorkoutTrackingStore = create<WorkoutTrackingState>((set, get) =
   getWeeklyWorkouts: async (userId: string) => {
     try {
       set({ loading: true, error: null });
-      
+
       // Obtener fecha de inicio y fin de la semana actual
       const today = new Date();
       const startOfWeek = new Date(today);
@@ -180,23 +179,25 @@ export const useWorkoutTrackingStore = create<WorkoutTrackingState>((set, get) =
   trackExercise: async (workoutId: string, exerciseData: Omit<ExerciseTracking, 'id'>) => {
     try {
       set({ loading: true, error: null });
-      
+
       const { data, error } = await supabase
         .from('exercise_tracking')
-        .insert([{
-          workout_tracking_id: workoutId,
-          ...exerciseData
-        }])
+        .insert([
+          {
+            workout_tracking_id: workoutId,
+            ...exerciseData,
+          },
+        ])
         .select()
         .single();
 
       if (error) throw error;
 
-      set(state => ({
+      set((state) => ({
         exerciseTrackings: {
           ...state.exerciseTrackings,
-          [workoutId]: [...(state.exerciseTrackings[workoutId] || []), data]
-        }
+          [workoutId]: [...(state.exerciseTrackings[workoutId] || []), data],
+        },
       }));
 
       Toast.show({
@@ -219,7 +220,7 @@ export const useWorkoutTrackingStore = create<WorkoutTrackingState>((set, get) =
   getWorkoutExercises: async (workoutId: string) => {
     try {
       set({ loading: true, error: null });
-      
+
       const { data, error } = await supabase
         .from('exercise_tracking')
         .select('*')
@@ -228,11 +229,11 @@ export const useWorkoutTrackingStore = create<WorkoutTrackingState>((set, get) =
 
       if (error) throw error;
 
-      set(state => ({
+      set((state) => ({
         exerciseTrackings: {
           ...state.exerciseTrackings,
-          [workoutId]: data || []
-        }
+          [workoutId]: data || [],
+        },
       }));
     } catch (error) {
       handleSupabaseError(error);
@@ -245,4 +246,5 @@ export const useWorkoutTrackingStore = create<WorkoutTrackingState>((set, get) =
       set({ loading: false });
     }
   },
+  clearCurrentWorkout: () => set({ currentWorkout: null }),
 }));

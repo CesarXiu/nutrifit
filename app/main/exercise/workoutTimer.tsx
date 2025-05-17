@@ -4,7 +4,6 @@ import { useWorkoutTrackingStore } from '../../../stores/workoutTrackingStore';
 import { useExerciseStore } from '../../../stores/exerciseStore';
 import Toast from 'react-native-toast-message';
 import { Feather, MaterialIcons, Ionicons, FontAwesome } from '@expo/vector-icons';
-// import { RoutineExercise } from 'types/exercise';
 
 interface WorkoutTimerProps {
   onFinish: () => void;
@@ -18,130 +17,15 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ onFinish }) => {
   const [currentSet, setCurrentSet] = useState(1);
   const [isResting, setIsResting] = useState(false);
   const [loading, setLoading] = useState(true);
-  const { currentWorkout, endWorkout, getTodayWorkouts, getWeeklyWorkouts } =
+  const { currentWorkout, endWorkout, getTodayWorkouts, getWeeklyWorkouts, clearCurrentWorkout } =
     useWorkoutTrackingStore();
   const { routineExercises, getRoutineExercises } = useExerciseStore();
-  // const currentWorkout = {
-  //   id: '1',
-  //   user_id: '123',
-  //   routine_id: 'r1',
-  //   tracking_date: new Date().toISOString().split('T')[0],
-  //   start_time: '08:00',
-  //   end_time: '08:45',
-  //   duration: 45,
-  //   calories_burned: 350,
-  //   completed: true,
-  //   notes: 'Buen entrenamiento',
-  // }; // Mock current workout data
-
-  // const routineExercises: Record<string, RoutineExercise[]> = {
-  //   r1: [
-  //     {
-  //       id: 'e1',
-  //       routine_id: 'r1',
-  //       exercise_id: 'ex1',
-  //       order_index: 0,
-  //       sets: 3,
-  //       reps: 10,
-  //       duration: 45,
-  //       rest_time: 30,
-  //       exercise: {
-  //         id: 'ex1',
-  //         name: 'Push Up',
-  //         description: 'Push up exercise',
-  //         category: 'Strength',
-  //         difficulty: 'principiante',
-  //         muscles_worked: ['Chest', 'Triceps'],
-  //         calories_per_minute: 8,
-  //       },
-  //     },
-  //     {
-  //       id: 'e2',
-  //       routine_id: 'r1',
-  //       exercise_id: 'ex2',
-  //       order_index: 1,
-  //       sets: 3,
-  //       reps: 12,
-  //       duration: 45,
-  //       rest_time: 30,
-  //       exercise: {
-  //         id: 'ex2',
-  //         name: 'Squat',
-  //         description: 'Squat exercise',
-  //         category: 'Strength',
-  //         difficulty: 'principiante',
-  //         muscles_worked: ['Legs', 'Glutes'],
-  //         calories_per_minute: 7,
-  //       },
-  //     },
-  //   ],
-  //   r2: [
-  //     {
-  //       id: 'e3',
-  //       routine_id: 'r2',
-  //       exercise_id: 'ex3',
-  //       order_index: 0,
-  //       sets: 3,
-  //       reps: 10,
-  //       duration: 45,
-  //       rest_time: 30,
-  //       exercise: {
-  //         id: 'ex3',
-  //         name: 'Lunges',
-  //         description: 'Lunges exercise',
-  //         category: 'Strength',
-  //         difficulty: 'intermedio',
-  //         muscles_worked: ['Legs', 'Glutes'],
-  //         calories_per_minute: 7,
-  //       },
-  //     },
-  //     {
-  //       id: 'e4',
-  //       routine_id: 'r2',
-  //       exercise_id: 'ex4',
-  //       order_index: 1,
-  //       sets: 3,
-  //       reps: 30,
-  //       duration: 45,
-  //       rest_time: 30,
-  //       exercise: {
-  //         id: 'ex4',
-  //         name: 'Plank',
-  //         description: 'Plank exercise',
-  //         category: 'Core',
-  //         difficulty: 'principiante',
-  //         muscles_worked: ['Abs', 'Back'],
-  //         calories_per_minute: 6,
-  //       },
-  //     },
-  //   ],
-  // };
 
   const exercises = currentWorkout?.routine_id
     ? routineExercises[currentWorkout.routine_id] || []
     : [];
 
-  // const getRoutineExercises = async (routineId: string) => {
-  //   // Simulate fetching routine exercises from a store or API
-  //   const fetchedExercises = routineExercises[routineId] || [];
-  // };
-
-  // const endWorkout = async (workoutId: string, minutes: number, calories: number) => {
-  //   // Simulate ending the workout and updating the database
-  //   console.log(
-  //     `Workout ${workoutId} ended. Duration: ${minutes} minutes, Calories burned: ${calories}`
-  //   );
-  // };
-  // const getTodayWorkouts = async (userId: string) => {
-  //   // Simulate fetching today's workouts from a store or API
-  //   console.log(`Fetching today's workouts for user ${userId}`);
-  // };
-
-  // const getWeeklyWorkouts = async (userId: string) => {
-  //   // Simulate fetching weekly workouts from a store or API
-  //   console.log(`Fetching weekly workouts for user ${userId}`);
-  // };
-
+  // Cargar ejercicios al montar
   useEffect(() => {
     const loadExercises = async () => {
       if (currentWorkout?.routine_id) {
@@ -159,6 +43,23 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ onFinish }) => {
 
     loadExercises();
   }, [currentWorkout?.routine_id]);
+
+  // Si no hay ejercicios, mostrar Toast y cerrar el modal
+  useEffect(() => {
+    if (!loading && exercises.length === 0) {
+      Toast.show({ type: 'error', text1: 'Esta rutina no tiene ejercicios asignados.' });
+      handleClose();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [loading, exercises.length]);
+
+  // Limpiar estado cuando se desmonta o se cierra el timer
+  useEffect(() => {
+    return () => {
+      resetAll();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     let interval: NodeJS.Timeout | null = null;
@@ -212,12 +113,21 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ onFinish }) => {
     setIsRunning(!isRunning);
   };
 
-  const resetTimer = () => {
+  // Resetea todos los estados relacionados al timer y ejercicio
+  const resetAll = () => {
     setIsRunning(false);
     setSeconds(0);
     setCurrentExercise(0);
     setCurrentSet(1);
     setIsResting(false);
+    setTotalSeconds(0);
+  };
+
+  // Llama a resetAll y luego onFinish para cerrar el modal y limpiar el estado
+  const handleClose = () => {
+    resetAll();
+    onFinish();
+    clearCurrentWorkout();
   };
 
   const calculateCaloriesBurned = () => {
@@ -254,7 +164,7 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ onFinish }) => {
         await getWeeklyWorkouts(currentWorkout.user_id);
       }
 
-      onFinish();
+      handleClose();
     } catch (error) {
       console.error('Error finishing workout:', error);
       Toast.show({ type: 'error', text1: 'Error al finalizar el entrenamiento' });
@@ -297,12 +207,7 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ onFinish }) => {
   }
 
   if (exercises.length === 0) {
-    return (
-      <View className="flex-1 items-center justify-center p-8">
-        <Text className="mb-4 text-xl font-semibold">No hay ejercicios disponibles</Text>
-        <Text className="text-gray-600">Esta rutina no tiene ejercicios asignados.</Text>
-      </View>
-    );
+    return null;
   }
 
   const currentExerciseData = exercises[currentExercise];
@@ -322,7 +227,7 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ onFinish }) => {
     <ScrollView className="flex-1 bg-white">
       <View className="mx-auto max-w-2xl p-4">
         <View className="mb-6 flex-row items-center justify-between">
-          <TouchableOpacity onPress={onFinish} className="flex-row items-center">
+          <TouchableOpacity onPress={handleClose} className="flex-row items-center">
             <Ionicons name="arrow-back" size={20} color="#4b5563" />
             <Text className="ml-2 font-medium text-gray-600">Volver</Text>
           </TouchableOpacity>
@@ -395,7 +300,7 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ onFinish }) => {
             {/* Segunda fila: Reiniciar y Completar */}
             <View className="flex-row items-center justify-center">
               <TouchableOpacity
-                onPress={resetTimer}
+                onPress={resetAll}
                 className="mx-8 rounded-full bg-gray-500 p-4 active:bg-gray-600">
                 <Feather name="rotate-ccw" size={24} color="#fff" />
               </TouchableOpacity>
