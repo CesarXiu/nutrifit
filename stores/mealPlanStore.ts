@@ -1,3 +1,4 @@
+import 'react-native-get-random-values';
 import { create } from 'zustand';
 import { supabase } from '../lib/supabase';
 import Toast from 'react-native-toast-message';

@@ -195,34 +195,34 @@ const MainScreen: React.FC<MainScreenProps> = ({ onLogout }) => {
             </View>
           </View>
 
-          <ScrollView className="flex-1 p-4">
+            <ScrollView className="flex-1 p-6 pt-10">
             <View className="space-y-2">
               {tabs.map((tab, index) => (
-                <Animated.View key={tab.id} entering={SlideInLeft.delay(index * 100).duration(300)}>
-                  <TouchableOpacity
-                    onPress={() => {
-                      setActiveTab(tab.id);
-                      setIsMobileMenuOpen(false);
-                    }}
-                    className={`flex-row items-center rounded-lg px-4 py-3 ${
-                      activeTab === tab.id ? 'bg-blue-500' : 'bg-transparent'
-                    }`}>
-                    {tab.icon()}
-                    <Text
-                      className={`ml-3 ${activeTab === tab.id ? 'text-white' : 'text-gray-600'}`}>
-                      {tab.name}
-                    </Text>
-                  </TouchableOpacity>
-                </Animated.View>
+              <Animated.View key={tab.id} entering={SlideInLeft.delay(index * 100).duration(300)}>
+                <TouchableOpacity
+                onPress={() => {
+                  setActiveTab(tab.id);
+                  setIsMobileMenuOpen(false);
+                }}
+                className={`flex-row items-center rounded-lg px-4 py-3 ${
+                  activeTab === tab.id ? 'bg-blue-500' : 'bg-transparent'
+                }`}>
+                {tab.icon()}
+                <Text
+                  className={`ml-3 ${activeTab === tab.id ? 'text-white' : 'text-gray-600'}`}>
+                  {tab.name}
+                </Text>
+                </TouchableOpacity>
+              </Animated.View>
               ))}
             </View>
-          </ScrollView>
+            </ScrollView>
         </Animated.View>
 
         {/* Main Content */}
         <View className="flex-1">
           <ScrollView className="flex-1">
-            <View className="container mx-auto px-4 py-6">
+            <View className="container mx-auto px-4 pt-12 pb-16">
               <Animated.View entering={FadeIn.duration(300)}>{renderTabContent()}</Animated.View>
             </View>
           </ScrollView>

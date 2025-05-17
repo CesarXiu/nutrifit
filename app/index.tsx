@@ -22,6 +22,7 @@ function App() {
   }, [user])
 
   const handleLogin = () => {
+    
     setCurrentScreen('main')
   }
 

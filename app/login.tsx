@@ -8,6 +8,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { Ionicons, MaterialIcons } from '@expo/vector-icons';
+import { useAuthStore } from '../stores/authStore'
 import Toast from 'react-native-toast-message';
 
 interface LoginProps {
@@ -19,24 +20,20 @@ const Login: React.FC<LoginProps> = ({ onLogin, onSwitchToRegister }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-  console.log(onLogin);
+  const signIn = useAuthStore(state => state.signIn)
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
     try {
-      setLoading(true);
-      console.log(onLogin);
-      onLogin();
+      setLoading(true)
+      await signIn(email, password)
+      onLogin()
     } catch (error) {
-      console.error('Error en el inicio de sesión:', error);
-      Toast.show({
-        type: 'error',
-        text1: 'Error de inicio de sesión',
-        text2: 'Por favor verifica tus credenciales',
-      });
+      console.error('Error en el inicio de sesión:', error)
     } finally {
-      setLoading(false);
+      setLoading(false)
     }
-  };
+  }
 
   return (
     <ScrollView
