@@ -1,120 +1,120 @@
 import React, { useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { MaterialCommunityIcons, Feather, FontAwesome5, Ionicons } from '@expo/vector-icons';
-// import { useWorkoutTrackingStore } from '../../stores/workoutTrackingStore';
-// import { useWorkoutGoalsStore } from '../../stores/workoutGoalsStore';
-// import { useAuthStore } from '../../stores/authStore';
+import { useWorkoutTrackingStore } from '../../../stores/workoutTrackingStore';
+import { useWorkoutGoalsStore } from '../../../stores/workoutGoalsStore';
+import { useAuthStore } from '../../../stores/authStore';
 
 const WorkoutDashboard: React.FC = () => {
-  // const { user } = useAuthStore();
-  // const { todayWorkouts, weeklyWorkouts, getTodayWorkouts, getWeeklyWorkouts } =
-  //     useWorkoutTrackingStore();
-  // const { goals, fetchGoals } = useWorkoutGoalsStore();
+  const { user } = useAuthStore();
+  const { todayWorkouts, weeklyWorkouts, getTodayWorkouts, getWeeklyWorkouts } =
+      useWorkoutTrackingStore();
+  const { goals, fetchGoals } = useWorkoutGoalsStore();
 
-  const user = { id: '123' }; // Mock user data
-  const todayWorkouts = [
-    {
-      id: '1',
-      user_id: '123',
-      routine_id: 'r1',
-      tracking_date: new Date().toISOString().split('T')[0],
-      start_time: '08:00',
-      end_time: '08:45',
-      duration: 45,
-      calories_burned: 350,
-      completed: true,
-      notes: 'Buen entrenamiento',
-    },
-    {
-      id: '2',
-      user_id: '123',
-      routine_id: 'r2',
-      tracking_date: new Date().toISOString().split('T')[0],
-      start_time: '18:00',
-      end_time: '18:30',
-      duration: 30,
-      calories_burned: 200,
-      completed: false,
-      notes: 'No terminé',
-    },
-  ];
+  // const user = { id: '123' }; // Mock user data
+  // const todayWorkouts = [
+  //   {
+  //     id: '1',
+  //     user_id: '123',
+  //     routine_id: 'r1',
+  //     tracking_date: new Date().toISOString().split('T')[0],
+  //     start_time: '08:00',
+  //     end_time: '08:45',
+  //     duration: 45,
+  //     calories_burned: 350,
+  //     completed: true,
+  //     notes: 'Buen entrenamiento',
+  //   },
+  //   {
+  //     id: '2',
+  //     user_id: '123',
+  //     routine_id: 'r2',
+  //     tracking_date: new Date().toISOString().split('T')[0],
+  //     start_time: '18:00',
+  //     end_time: '18:30',
+  //     duration: 30,
+  //     calories_burned: 200,
+  //     completed: false,
+  //     notes: 'No terminé',
+  //   },
+  // ];
 
-  const weeklyWorkouts = [
-    {
-      id: '1',
-      user_id: '123',
-      routine_id: 'r1',
-      tracking_date: '2024-06-10',
-      start_time: '08:00',
-      end_time: '08:45',
-      duration: 45,
-      calories_burned: 350,
-      completed: true,
-      notes: 'Buen entrenamiento',
-    },
-    {
-      id: '2',
-      user_id: '123',
-      routine_id: 'r2',
-      tracking_date: '2024-06-11',
-      start_time: '18:00',
-      end_time: '18:30',
-      duration: 30,
-      calories_burned: 200,
-      completed: true,
-      notes: 'Entrenamiento rápido',
-    },
-    {
-      id: '3',
-      user_id: '123',
-      routine_id: 'r3',
-      tracking_date: '2024-06-12',
-      start_time: '07:30',
-      end_time: '08:00',
-      duration: 30,
-      calories_burned: 180,
-      completed: false,
-      notes: 'No terminé',
-    },
-    {
-      id: '4',
-      user_id: '123',
-      routine_id: 'r4',
-      tracking_date: '2024-06-13',
-      start_time: '19:00',
-      end_time: '19:40',
-      duration: 40,
-      calories_burned: 300,
-      completed: true,
-      notes: '',
-    },
-    {
-      id: '5',
-      user_id: '123',
-      routine_id: 'r5',
-      tracking_date: '2024-06-14',
-      start_time: '06:30',
-      end_time: '07:00',
-      duration: 30,
-      calories_burned: 220,
-      completed: true,
-      notes: 'Mañana productiva',
-    },
-  ];
-  const goals = {
-    workouts_per_week: 5,
-    minutes_per_workout: 30,
-    calories_per_week: 2000,
-  }; // Mock data}
-  const getTodayWorkouts = (userId: string) => {
-    // Mock function to fetch today's workouts
-  };
-  const getWeeklyWorkouts = (userId: string) => {
-    // Mock function to fetch weekly workouts
-  };
-  const fetchGoals = (userId: string) => {
-    // Mock function to fetch goals
-  };
+  // const weeklyWorkouts = [
+  //   {
+  //     id: '1',
+  //     user_id: '123',
+  //     routine_id: 'r1',
+  //     tracking_date: '2024-06-10',
+  //     start_time: '08:00',
+  //     end_time: '08:45',
+  //     duration: 45,
+  //     calories_burned: 350,
+  //     completed: true,
+  //     notes: 'Buen entrenamiento',
+  //   },
+  //   {
+  //     id: '2',
+  //     user_id: '123',
+  //     routine_id: 'r2',
+  //     tracking_date: '2024-06-11',
+  //     start_time: '18:00',
+  //     end_time: '18:30',
+  //     duration: 30,
+  //     calories_burned: 200,
+  //     completed: true,
+  //     notes: 'Entrenamiento rápido',
+  //   },
+  //   {
+  //     id: '3',
+  //     user_id: '123',
+  //     routine_id: 'r3',
+  //     tracking_date: '2024-06-12',
+  //     start_time: '07:30',
+  //     end_time: '08:00',
+  //     duration: 30,
+  //     calories_burned: 180,
+  //     completed: false,
+  //     notes: 'No terminé',
+  //   },
+  //   {
+  //     id: '4',
+  //     user_id: '123',
+  //     routine_id: 'r4',
+  //     tracking_date: '2024-06-13',
+  //     start_time: '19:00',
+  //     end_time: '19:40',
+  //     duration: 40,
+  //     calories_burned: 300,
+  //     completed: true,
+  //     notes: '',
+  //   },
+  //   {
+  //     id: '5',
+  //     user_id: '123',
+  //     routine_id: 'r5',
+  //     tracking_date: '2024-06-14',
+  //     start_time: '06:30',
+  //     end_time: '07:00',
+  //     duration: 30,
+  //     calories_burned: 220,
+  //     completed: true,
+  //     notes: 'Mañana productiva',
+  //   },
+  // ];
+  // const goals = {
+  //   workouts_per_week: 5,
+  //   minutes_per_workout: 30,
+  //   calories_per_week: 2000,
+  // }; // Mock data}
+  // const getTodayWorkouts = (userId: string) => {
+  //   // Mock function to fetch today's workouts
+  // };
+  // const getWeeklyWorkouts = (userId: string) => {
+  //   // Mock function to fetch weekly workouts
+  // };
+  // const fetchGoals = (userId: string) => {
+  //   // Mock function to fetch goals
+  // };
 
   useEffect(() => {
     if (user) {

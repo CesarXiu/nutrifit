@@ -2,51 +2,51 @@ import React, { useEffect } from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 import { LineChart } from 'react-native-chart-kit';
 import { Dimensions } from 'react-native';
-// import { useDailyTrackingStore } from '../stores/dailyTrackingStore';
-// import { useNutritionGoalsStore } from '../stores/nutritionGoalsStore';
-// import { useWaterIntakeStore } from '../stores/waterIntakeStore';
-// import { useAuthStore } from '../stores/authStore';
+import { useDailyTrackingStore } from '../../stores/dailyTrackingStore';
+import { useNutritionGoalsStore } from '../../stores/nutritionGoalsStore';
+import { useWaterIntakeStore } from '../../stores/waterIntakeStore';
+import { useAuthStore } from '../../stores/authStore';
 import { getCurrentWeekDates, getWeekdayName } from '../../utils/dateUtils';
 
 const screenWidth = Dimensions.get('window').width;
 
 const ProgressChart: React.FC = () => {
-    // const { weeklyTracking, getWeeklyTracking } = useDailyTrackingStore();
-    // const { goals } = useNutritionGoalsStore();
-    // const { getWeeklyWaterIntake, weeklyWaterIntake } = useWaterIntakeStore();
-    // const { user } = useAuthStore();
+    const { weeklyTracking, getWeeklyTracking } = useDailyTrackingStore();
+    const { goals } = useNutritionGoalsStore();
+    const { getWeeklyWaterIntake, weeklyWaterIntake } = useWaterIntakeStore();
+    const { user } = useAuthStore();
 
-    const weeklyTracking = [
-        { tracking_date: '2023-10-01', completed: true, calories: 2000, protein: 150, carbs: 250, fats: 70 },
-        { tracking_date: '2023-10-02', completed: true, calories: 1800, protein: 140, carbs: 230, fats: 60 },
-        { tracking_date: '2023-10-03', completed: true, calories: 2200, protein: 160, carbs: 270, fats: 80 },
-        { tracking_date: '2023-10-04', completed: true, calories: 2100, protein: 155, carbs: 260, fats: 75 },
-        { tracking_date: '2023-10-05', completed: true, calories: 1900, protein: 145, carbs: 240, fats: 65 },
-        { tracking_date: '2023-10-06', completed: true, calories: 2000, protein: 150, carbs: 250, fats: 70 },
-        { tracking_date: '2023-10-07', completed: true, calories: 2050, protein: 155, carbs: 255, fats: 72 }
-    ];
-    const weeklyWaterIntake = [
-        { tracking_date: '2023-10-01', amount: 2000 },
-        { tracking_date: '2023-10-02', amount: 2500 },
-        { tracking_date: '2023-10-03', amount: 2200 },
-        { tracking_date: '2023-10-04', amount: 2400 },
-        { tracking_date: '2023-10-05', amount: 2300 },
-        { tracking_date: '2023-10-06', amount: 2100 },
-        { tracking_date: '2023-10-07', amount: 2600 }
-    ];
-    const user = { id: 'user123' };
-    const goals = { calories: 2000, protein: 150, carbs: 250, fats: 70, water: 3000 };
+    // const weeklyTracking = [
+    //     { tracking_date: '2023-10-01', completed: true, calories: 2000, protein: 150, carbs: 250, fats: 70 },
+    //     { tracking_date: '2023-10-02', completed: true, calories: 1800, protein: 140, carbs: 230, fats: 60 },
+    //     { tracking_date: '2023-10-03', completed: true, calories: 2200, protein: 160, carbs: 270, fats: 80 },
+    //     { tracking_date: '2023-10-04', completed: true, calories: 2100, protein: 155, carbs: 260, fats: 75 },
+    //     { tracking_date: '2023-10-05', completed: true, calories: 1900, protein: 145, carbs: 240, fats: 65 },
+    //     { tracking_date: '2023-10-06', completed: true, calories: 2000, protein: 150, carbs: 250, fats: 70 },
+    //     { tracking_date: '2023-10-07', completed: true, calories: 2050, protein: 155, carbs: 255, fats: 72 }
+    // ];
+    // const weeklyWaterIntake = [
+    //     { tracking_date: '2023-10-01', amount: 2000 },
+    //     { tracking_date: '2023-10-02', amount: 2500 },
+    //     { tracking_date: '2023-10-03', amount: 2200 },
+    //     { tracking_date: '2023-10-04', amount: 2400 },
+    //     { tracking_date: '2023-10-05', amount: 2300 },
+    //     { tracking_date: '2023-10-06', amount: 2100 },
+    //     { tracking_date: '2023-10-07', amount: 2600 }
+    // ];
+    // const user = { id: 'user123' };
+    // const goals = { calories: 2000, protein: 150, carbs: 250, fats: 70, water: 3000 };
 
-    const getWeeklyTracking = async (userId: string) => {
-        // Placeholder for fetching weekly tracking data
-        // const data = await fetchWeeklyTracking(userId);
-        // setWeeklyTracking(data);
-    }
-    const getWeeklyWaterIntake = async (userId: string) => {
-        // Placeholder for fetching weekly water intake data
-        // const data = await fetchWeeklyWaterIntake(userId);
-        // setWeeklyWaterIntake(data);
-    }
+    // const getWeeklyTracking = async (userId: string) => {
+    //     // Placeholder for fetching weekly tracking data
+    //     // const data = await fetchWeeklyTracking(userId);
+    //     // setWeeklyTracking(data);
+    // }
+    // const getWeeklyWaterIntake = async (userId: string) => {
+    //     // Placeholder for fetching weekly water intake data
+    //     // const data = await fetchWeeklyWaterIntake(userId);
+    //     // setWeeklyWaterIntake(data);
+    // }
 
     useEffect(() => {
         if (user) {

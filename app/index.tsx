@@ -4,22 +4,22 @@ import Login from './login'
 import Register from './register'
 import UserOnboarding from './userOnboarding'
 import MainScreen from './main'
-// import { useAuthStore } from './stores/authStore'
+import { useAuthStore } from '../stores/authStore'
 import Toast from 'react-native-toast-message'
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState<'login' | 'register' | 'onboarding' | 'main'>('login')
-  // const { user, checkAuth } = useAuthStore()
+  const { user, checkAuth } = useAuthStore()
 
   useEffect(() => {
-    // checkAuth()
+    checkAuth()
   }, [])
 
-  // useEffect(() => {
-  //   if (user) {
-  //     setCurrentScreen('main')
-  //   }
-  // }, [user])
+  useEffect(() => {
+    if (user) {
+      setCurrentScreen('main')
+    }
+  }, [user])
 
   const handleLogin = () => {
     setCurrentScreen('main')

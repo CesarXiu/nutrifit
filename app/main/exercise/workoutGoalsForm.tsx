@@ -1,46 +1,46 @@
 import React, { useEffect } from 'react';
 import { View, Text, ActivityIndicator, ScrollView } from 'react-native';
 import { MaterialCommunityIcons, Feather, FontAwesome5 } from '@expo/vector-icons';
-// import { useWorkoutGoalsStore } from '../../stores/workoutGoalsStore';
-// import { useUserProfileStore } from '../../stores/userProfileStore';
-// import { useAuthStore } from '../../stores/authStore';
+import { useWorkoutGoalsStore } from '../../../stores/workoutGoalsStore';
+import { useUserProfileStore } from '../../../stores/userProfileStore';
+import { useAuthStore } from '../../../stores/authStore';
 import { calculateWorkoutGoals } from '../../../utils/workoutCalculator';
 
 const WorkoutGoalsForm: React.FC = () => {
-  //   const { user } = useAuthStore();
-  //   const { goals, updateGoals } = useWorkoutGoalsStore();
-  //   const { profile } = useUserProfileStore();
+    const { user } = useAuthStore();
+    const { goals, updateGoals } = useWorkoutGoalsStore();
+    const { profile } = useUserProfileStore();
 
-  const user = { id: '123' }; // Mock user data
-  const goals = {
-    workouts_per_week: 4,
-    minutes_per_workout: 60,
-    calories_per_week: 2000,
-  };
-  const updateGoals = async (userId: string, newGoals: any) => {
-    // Simulate updating goals
-    console.log(`Updating goals for user ${userId}:`, newGoals);
-  };
-  interface UserProfile {
-    id: string;
-    user_id: string;
-    weight: number;
-    height: number;
-    age: number;
-    gender: 'male' | 'female';
-    activity_level: string;
-    goal: 'maintain' | 'weight-loss' | 'muscle';
-  }
-  const profile: UserProfile = {
-    id: '1',
-    user_id: '123',
-    weight: 70,
-    height: 175,
-    age: 30,
-    gender: 'male',
-    activity_level: 'intermediate',
-    goal: 'weight-loss',
-  };
+  // const user = { id: '123' }; // Mock user data
+  // const goals = {
+  //   workouts_per_week: 4,
+  //   minutes_per_workout: 60,
+  //   calories_per_week: 2000,
+  // };
+  // const updateGoals = async (userId: string, newGoals: any) => {
+  //   // Simulate updating goals
+  //   console.log(`Updating goals for user ${userId}:`, newGoals);
+  // };
+  // interface UserProfile {
+  //   id: string;
+  //   user_id: string;
+  //   weight: number;
+  //   height: number;
+  //   age: number;
+  //   gender: 'male' | 'female';
+  //   activity_level: string;
+  //   goal: 'maintain' | 'weight-loss' | 'muscle';
+  // }
+  // const profile: UserProfile = {
+  //   id: '1',
+  //   user_id: '123',
+  //   weight: 70,
+  //   height: 175,
+  //   age: 30,
+  //   gender: 'male',
+  //   activity_level: 'intermediate',
+  //   goal: 'weight-loss',
+  // };
 
   useEffect(() => {
     const initializeGoals = async () => {

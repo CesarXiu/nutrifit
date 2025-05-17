@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { MaterialCommunityIcons, FontAwesome, Feather } from '@expo/vector-icons';
-// import { useNutritionGoalsStore } from '../stores/nutritionGoalsStore';
-// import { useAuthStore } from '../stores/authStore';
+import { useNutritionGoalsStore } from '../stores/nutritionGoalsStore';
+import { useAuthStore } from '../stores/authStore';
 import Toast from 'react-native-toast-message';
 import {
   calculateBMR,
@@ -33,12 +33,12 @@ const NutritionRecommendations: React.FC<NutritionRecommendationsProps> = ({
   userData,
   onSaveRecommendations,
 }) => {
-//   const { user } = useAuthStore();
-//   const { saveGoals } = useNutritionGoalsStore();
-    const [user, setUser] = React.useState<any>(null);
-    const saveGoals = async (userId: string, recommendations: any) => {
-        // Simulate saving goals to a database
-    }
+  const { user } = useAuthStore();
+  const { saveGoals } = useNutritionGoalsStore();
+    // const [user, setUser] = React.useState<any>(null);
+    // const saveGoals = async (userId: string, recommendations: any) => {
+    //     // Simulate saving goals to a database
+    // }
 
   const bmr = calculateBMR(userData.weight, userData.height, userData.age, userData.gender);
   const tdee = calculateTDEE(bmr, userData.activityLevel);
@@ -64,12 +64,12 @@ const NutritionRecommendations: React.FC<NutritionRecommendationsProps> = ({
 
   const handleSaveRecommendations = async () => {
     try {
-      // if (!user) {
-      //   throw new Error('Usuario no autenticado');
-      // }
+      if (!user) {
+        throw new Error('Usuario no autenticado');
+      }
 
       // Guardar en la base de datos
-      // await saveGoals(user.id, recommendations);
+      await saveGoals(user.id, recommendations);
 
       // Notificar al componente padre
       onSaveRecommendations(recommendations);

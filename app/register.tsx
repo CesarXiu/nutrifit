@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { View, Text, TextInput, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native'
 import { MaterialIcons, Ionicons } from '@expo/vector-icons'
-// import { useAuthStore } from '../stores/authStore'
+import { useAuthStore } from '../stores/authStore'
 import Toast from 'react-native-toast-message'
 
 interface RegisterProps {
@@ -16,7 +16,7 @@ const Register: React.FC<RegisterProps> = ({ onRegister, onSwitchToLogin }) => {
   const [confirmPassword, setConfirmPassword] = useState('')
   const [loading, setLoading] = useState(false)
 
-//   const signUp = useAuthStore(state => state.signUp)
+  const signUp = useAuthStore(state => state.signUp)
 
   const handleSubmit = async () => {
     if (password !== confirmPassword) {
@@ -30,7 +30,7 @@ const Register: React.FC<RegisterProps> = ({ onRegister, onSwitchToLogin }) => {
 
     try {
       setLoading(true)
-    //   await signUp(email, password, name)
+      await signUp(email, password, name)
       onRegister(email)
     } catch (error) {
       console.error('Error en el registro:', error)

@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, TouchableOpacity, Animated, Easing } from 'react-native';
 import { MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
-// import { useWaterIntakeStore } from '../stores/waterIntakeStore';
+import { useWaterIntakeStore } from '../../stores/waterIntakeStore';
 import Toast from 'react-native-toast-message';
 
 interface WaterTrackerProps {
@@ -16,18 +16,18 @@ interface WaterDroplet {
 }
 
 const WaterTracker: React.FC<WaterTrackerProps> = ({ goal, userId }) => {
-  //   const { todayIntake, loading, updateWaterIntake, getTodayIntake, getWeeklyWaterIntake } = useWaterIntakeStore();
-  const todayIntake = { amount: 0 }; // Placeholder for todayIntake
-  const loading = false; // Placeholder for loading
-  const updateWaterIntake = async (userId: string, amount: number) => {
-    // Placeholder for updating water intake
-  };
-  const getTodayIntake = async (userId: string) => {
-    // Placeholder for getting today's intake
-  };
-  const getWeeklyWaterIntake = async (userId: string) => {
-    // Placeholder for getting weekly water intake
-  };
+    const { todayIntake, loading, updateWaterIntake, getTodayIntake, getWeeklyWaterIntake } = useWaterIntakeStore();
+  // const todayIntake = { amount: 0 }; // Placeholder for todayIntake
+  // const loading = false; // Placeholder for loading
+  // const updateWaterIntake = async (userId: string, amount: number) => {
+  //   // Placeholder for updating water intake
+  // };
+  // const getTodayIntake = async (userId: string) => {
+  //   // Placeholder for getting today's intake
+  // };
+  // const getWeeklyWaterIntake = async (userId: string) => {
+  //   // Placeholder for getting weekly water intake
+  // };
 
   const [isLoading, setIsLoading] = useState(loading);
 

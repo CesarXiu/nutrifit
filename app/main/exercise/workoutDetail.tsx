@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, ActivityIndicator } from 'react-native';
 import { Feather, MaterialCommunityIcons } from '@expo/vector-icons';
 import { WorkoutRoutine, RoutineExercise } from '../../../types/exercise';
-// import { useExerciseStore } from '../../stores/exerciseStore';
+import { useExerciseStore } from '../../../stores/exerciseStore';
 
 interface WorkoutDetailProps {
   routine: WorkoutRoutine;
@@ -11,55 +11,55 @@ interface WorkoutDetailProps {
 }
 
 const WorkoutDetail: React.FC<WorkoutDetailProps> = ({ routine, onBack, onStartWorkout }) => {
-  //   const { getRoutineExercises, routineExercises } = useExerciseStore();
+    const { getRoutineExercises, routineExercises } = useExerciseStore();
   const [loading, setLoading] = useState(true);
-  const [routineExercises, setRoutineExercises] = useState<{ [key: string]: RoutineExercise[] }>(
-    {}
-  );
+  // const [routineExercises, setRoutineExercises] = useState<{ [key: string]: RoutineExercise[] }>(
+  //   {}
+  // );
 
-  const getRoutineExercises = async (routineId: string) => {
-    // Simulate fetching routine exercises from a store or API
-    const fetchedExercises: RoutineExercise[] = [
-      {
-        id: '1',
-        routine_id: routineId,
-        exercise_id: '1',
-        order_index: 0,
-        sets: 3,
-        reps: 12,
-        rest_time: 60,
-        exercise: {
-          id: '1',
-          name: 'Sentadillas',
-          description: 'Ejercicio de piernas',
-          category: 'Piernas',
-          difficulty: 'principiante',
-          muscles_worked: ['cuádriceps', 'glúteos'],
-        },
-      },
-      {
-        id: '2',
-        routine_id: routineId,
-        exercise_id: '2',
-        order_index: 1,
-        sets: 3,
-        reps: 10,
-        rest_time: 60,
-        exercise: {
-          id: '2',
-          name: 'Flexiones',
-          description: 'Ejercicio de pecho',
-          category: 'Pecho',
-          difficulty: 'principiante',
-          muscles_worked: ['pectorales', 'tríceps'],
-        },
-      },
-    ];
-    setRoutineExercises((prev) => ({
-      ...prev,
-      [routineId]: fetchedExercises,
-    }));
-  };
+  // const getRoutineExercises = async (routineId: string) => {
+  //   // Simulate fetching routine exercises from a store or API
+  //   const fetchedExercises: RoutineExercise[] = [
+  //     {
+  //       id: '1',
+  //       routine_id: routineId,
+  //       exercise_id: '1',
+  //       order_index: 0,
+  //       sets: 3,
+  //       reps: 12,
+  //       rest_time: 60,
+  //       exercise: {
+  //         id: '1',
+  //         name: 'Sentadillas',
+  //         description: 'Ejercicio de piernas',
+  //         category: 'Piernas',
+  //         difficulty: 'principiante',
+  //         muscles_worked: ['cuádriceps', 'glúteos'],
+  //       },
+  //     },
+  //     {
+  //       id: '2',
+  //       routine_id: routineId,
+  //       exercise_id: '2',
+  //       order_index: 1,
+  //       sets: 3,
+  //       reps: 10,
+  //       rest_time: 60,
+  //       exercise: {
+  //         id: '2',
+  //         name: 'Flexiones',
+  //         description: 'Ejercicio de pecho',
+  //         category: 'Pecho',
+  //         difficulty: 'principiante',
+  //         muscles_worked: ['pectorales', 'tríceps'],
+  //       },
+  //     },
+  //   ];
+  //   setRoutineExercises((prev) => ({
+  //     ...prev,
+  //     [routineId]: fetchedExercises,
+  //   }));
+  // };
 
   useEffect(() => {
     const loadExercises = async () => {

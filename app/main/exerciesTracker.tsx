@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, ScrollView, Modal } from 'react-native';
-// import { useExerciseStore } from '../stores/exerciseStore';
-// import { useWorkoutTrackingStore } from '../stores/workoutTrackingStore';
+import { useExerciseStore } from '../../stores/exerciseStore';
+import { useWorkoutTrackingStore } from '../../stores/workoutTrackingStore';
 import { WorkoutRoutine } from '../../types/exercise';
 import WorkoutDashboard from './exercise/workoutDarshboard';
 import WorkoutTimer from './exercise/workoutTimer';
@@ -17,35 +17,35 @@ import WorkoutGoalsForm from './exercise/workoutGoalsForm';
 const ExerciseTracker: React.FC = () => {
   const [selectedRoutine, setSelectedRoutine] = useState<WorkoutRoutine | null>(null);
   const [isWorkoutActive, setIsWorkoutActive] = useState(false);
-  const [routines, setRoutines] = useState<WorkoutRoutine[]>([]);
-  // const { routines, fetchRoutines } = useExerciseStore();
-  // const { currentWorkout } = useWorkoutTrackingStore();
+  // const [routines, setRoutines] = useState<WorkoutRoutine[]>([]);
+  const { routines, fetchRoutines } = useExerciseStore();
+  const { currentWorkout } = useWorkoutTrackingStore();
 
-  const fetchRoutines = async () => {
-    // Simulate fetching routines from a store or API
-    const fetchedRoutines: WorkoutRoutine[] = [
-      {
-        id: '1',
-        name: 'Rutina Cuerpo Completo',
-        description: 'Entrenamiento completo para todo el cuerpo.',
-        difficulty: 'intermedio',
-        estimated_duration: 60,
-        calories_burned: 500,
-        category: 'fuerza',
-      },
-      {
-        id: '2',
-        name: 'Cardio Explosivo',
-        description: 'Rutina de cardio de alta intensidad.',
-        difficulty: 'avanzado',
-        estimated_duration: 45,
-        calories_burned: 400,
-        category: 'cardio',
-      },
-    ];
-    setRoutines(fetchedRoutines);
-  };
-  const [currentWorkout, setCurrentWorkout] = useState<any>(null);
+  // const fetchRoutines = async () => {
+  //   // Simulate fetching routines from a store or API
+  //   const fetchedRoutines: WorkoutRoutine[] = [
+  //     {
+  //       id: '1',
+  //       name: 'Rutina Cuerpo Completo',
+  //       description: 'Entrenamiento completo para todo el cuerpo.',
+  //       difficulty: 'intermedio',
+  //       estimated_duration: 60,
+  //       calories_burned: 500,
+  //       category: 'fuerza',
+  //     },
+  //     {
+  //       id: '2',
+  //       name: 'Cardio Explosivo',
+  //       description: 'Rutina de cardio de alta intensidad.',
+  //       difficulty: 'avanzado',
+  //       estimated_duration: 45,
+  //       calories_burned: 400,
+  //       category: 'cardio',
+  //     },
+  //   ];
+  //   setRoutines(fetchedRoutines);
+  // };
+  // const [currentWorkout, setCurrentWorkout] = useState<any>(null);
 
   useEffect(() => {
     fetchRoutines();

@@ -5,7 +5,22 @@ import Constants from 'expo-constants';
 import Toast from 'react-native-toast-message';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const { supabaseUrl, supabaseKey } = Constants.expoConfig?.extra || {};
+const supabaseUrl =
+  Constants.expoConfig?.extra?.supabaseUrl ||
+  Constants.manifest?.extra?.supabaseUrl ||
+  process.env.EXPO_PUBLIC_SUPABASE_URL ||
+  process.env.SUPABASE_URL;
+
+const supabaseKey =
+  Constants.expoConfig?.extra?.supabaseKey ||
+  Constants.manifest?.extra?.supabaseKey ||
+  process.env.EXPO_PUBLIC_SUPABASE_KEY ||
+  process.env.SUPABASE_KEY;
+
+if (!supabaseUrl || !supabaseKey) {
+  throw new Error('supabaseUrl y supabaseKey son requeridos. Revisa tu configuración de variables.');
+}
+
 export const supabase = createClient(supabaseUrl, supabaseKey, {
   auth: {
     storage: AsyncStorage,

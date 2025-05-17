@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { MaterialIcons, FontAwesome, AntDesign } from '@expo/vector-icons';
-// import { useMealPlanStore } from '../stores/mealPlanStore';
-// import { useDailyTrackingStore } from '../stores/dailyTrackingStore';
-// import { useAuthStore } from '../stores/authStore';
-// import { useNutritionGoalsStore } from '../stores/nutritionGoalsStore';
+import { useMealPlanStore } from '../../stores/mealPlanStore';
+import { useDailyTrackingStore } from '../../stores/dailyTrackingStore';
+import { useAuthStore } from '../../stores/authStore';
+import { useNutritionGoalsStore } from '../../stores/nutritionGoalsStore';
 import { formatLocalDate } from '../../utils/dateUtils';
 import Animated, { 
   FadeIn,
@@ -13,32 +13,32 @@ import Animated, {
 } from 'react-native-reanimated';
 
 const DailyMealTracking: React.FC = () => {
-//   const { user } = useAuthStore();
-//   const { meals } = useMealPlanStore();
-//   const { trackedMeals, getTodayTracking, toggleMealCompletion } = useDailyTrackingStore();
-//   const { goals } = useNutritionGoalsStore();
-    const meals = [
-        { id: '1', meal_name: 'Desayuno', meal_type: 'breakfast', calories: 300, protein: 20, carbs: 40, fat: 10, day: 'lunes' },
-        { id: '2', meal_name: 'Almuerzo', meal_type: 'lunch', calories: 500, protein: 30, carbs: 60, fat: 15, day: 'lunes' },
-        { id: '3', meal_name: 'Cena', meal_type: 'dinner', calories: 400, protein: 25, carbs: 50, fat: 20, day: 'lunes' }
-    ];
-    const trackedMeals = [
-        { meal_plan_id: '1', tracking_date: '2023-10-01', completed: true, calories: 300, protein: 20, carbs: 40, fats: 10 },
-        { meal_plan_id: '2', tracking_date: '2023-10-01', completed: false, calories: 500, protein: 30, carbs: 60, fats: 15 },
-        { meal_plan_id: '3', tracking_date: '2023-10-01', completed: true, calories: 400, protein: 25, carbs: 50, fats: 20 }
-    ];
-    const user = { id: 'user123' };
-    const goals = { calories: 2000, protein: 150, carbs: 250, fats: 70 };
+  const { user } = useAuthStore();
+  const { meals } = useMealPlanStore();
+  const { trackedMeals, getTodayTracking, toggleMealCompletion } = useDailyTrackingStore();
+  const { goals } = useNutritionGoalsStore();
+    // const meals = [
+    //     { id: '1', meal_name: 'Desayuno', meal_type: 'breakfast', calories: 300, protein: 20, carbs: 40, fat: 10, day: 'lunes' },
+    //     { id: '2', meal_name: 'Almuerzo', meal_type: 'lunch', calories: 500, protein: 30, carbs: 60, fat: 15, day: 'lunes' },
+    //     { id: '3', meal_name: 'Cena', meal_type: 'dinner', calories: 400, protein: 25, carbs: 50, fat: 20, day: 'lunes' }
+    // ];
+    // const trackedMeals = [
+    //     { meal_plan_id: '1', tracking_date: '2023-10-01', completed: true, calories: 300, protein: 20, carbs: 40, fats: 10 },
+    //     { meal_plan_id: '2', tracking_date: '2023-10-01', completed: false, calories: 500, protein: 30, carbs: 60, fats: 15 },
+    //     { meal_plan_id: '3', tracking_date: '2023-10-01', completed: true, calories: 400, protein: 25, carbs: 50, fats: 20 }
+    // ];
+    // const user = { id: 'user123' };
+    // const goals = { calories: 2000, protein: 150, carbs: 250, fats: 70 };
 
-    const getTodayTracking = async (userId: string) => {
-    }
-    const toggleMealCompletion = async (
-      userId: string,
-      mealId: string,
-      mealData: { calories: number; protein: number; carbs: number; fats: number },
-      completed: boolean
-    ) => {
-    }
+    // const getTodayTracking = async (userId: string) => {
+    // }
+    // const toggleMealCompletion = async (
+    //   userId: string,
+    //   mealId: string,
+    //   mealData: { calories: number; protein: number; carbs: number; fats: number },
+    //   completed: boolean
+    // ) => {
+    // }
 
   useEffect(() => {
     if (user) {

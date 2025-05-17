@@ -2,8 +2,8 @@ import React from 'react';
 import { View, Text, TouchableOpacity, ScrollView } from 'react-native';
 import { Feather, MaterialCommunityIcons, Ionicons } from '@expo/vector-icons';
 import { WorkoutRoutine } from '../../../types/exercise';
-// import { useWorkoutTrackingStore } from '../../stores/workoutTrackingStore';
-// import { useAuthStore } from '../../stores/authStore';
+import { useWorkoutTrackingStore } from '../../../stores/workoutTrackingStore';
+import { useAuthStore } from '../../../stores/authStore';
 
 interface WorkoutListProps {
   routines: WorkoutRoutine[];
@@ -24,15 +24,15 @@ const getDifficultyStyle = (difficulty: string) => {
 };
 
 const WorkoutList: React.FC<WorkoutListProps> = ({ routines, onSelectRoutine }) => {
-//   const { startWorkout } = useWorkoutTrackingStore();
-//   const { user } = useAuthStore();
+  const { startWorkout } = useWorkoutTrackingStore();
+  const { user } = useAuthStore();
 
-    const user = { id: '123' }; // Mock user data
+    // const user = { id: '123' }; // Mock user data
 
-    const startWorkout = async (userId: string, routineId: string) => {
-        // Simulate starting a workout
-        console.log(`Starting workout for user ${userId} with routine ${routineId}`);
-    }
+    // const startWorkout = async (userId: string, routineId: string) => {
+    //     // Simulate starting a workout
+    //     console.log(`Starting workout for user ${userId} with routine ${routineId}`);
+    // }
 
   const handleStartWorkout = async (routine: WorkoutRoutine) => {
     if (!user) return;

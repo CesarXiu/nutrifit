@@ -1,103 +1,104 @@
-import React, { useState } from 'react'
-import { View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native'
-import { MaterialCommunityIcons, FontAwesome, AntDesign, Feather } from '@expo/vector-icons'
-import NutritionRecommendations from './nutritionRecommendations'
-// import { useUserProfileStore } from '../stores/userProfileStore'
-// import { useAuthStore } from '../stores/authStore'
-import Toast from 'react-native-toast-message'
-// import AsyncStorage from '@react-native-async-storage/async-storage'
+import React, { useState } from 'react';
+import { View, Text, TextInput, TouchableOpacity, ScrollView } from 'react-native';
+import { MaterialCommunityIcons, FontAwesome, AntDesign, Feather } from '@expo/vector-icons';
+import NutritionRecommendations from './nutritionRecommendations';
+import { useUserProfileStore } from '../stores/userProfileStore';
+import { useAuthStore } from '../stores/authStore';
+import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 interface UserOnboardingProps {
-  onComplete: () => void
+  onComplete: () => void;
 }
 
 const UserOnboarding: React.FC<UserOnboardingProps> = ({ onComplete }) => {
-  const [step, setStep] = useState(1)
+  const [step, setStep] = useState(1);
   const [userData, setUserData] = useState({
     age: '',
     height: '',
     weight: '',
     gender: '',
     activityLevel: '',
-    goal: ''
-  })
+    goal: '',
+  });
 
-//   const { user } = useAuthStore()
-//   const { saveProfile } = useUserProfileStore()
+  const { user } = useAuthStore();
+  const { saveProfile } = useUserProfileStore();
 
-    const [ user, setUser ] = useState<any>(null) // Simulación de usuario autenticado+
-    const saveProfile = async (userId: string, data: any) => {
-    }
+  // const [ user, setUser ] = useState<any>(null) // Simulación de usuario autenticado+
+  // const saveProfile = async (userId: string, data: any) => {
+  // }
 
   const handleInputChange = (name: string, value: string) => {
-    setUserData(prev => ({ ...prev, [name]: value }))
-  }
+    setUserData((prev) => ({ ...prev, [name]: value }));
+  };
 
   const handleNext = () => {
     if (step < 4) {
-      setStep(step + 1)
+      setStep(step + 1);
     }
-  }
+  };
 
   const handleSaveRecommendations = async (recommendations: any) => {
     try {
-    //   if (!user) {
-    //     throw new Error('No hay usuario autenticado')
-    //   }
+        if (!user) {
+          throw new Error('No hay usuario autenticado')
+        }
 
-    //   await saveProfile(user.id, {
-    //     weight: Number(userData.weight),
-    //     height: Number(userData.height),
-    //     age: Number(userData.age),
-    //     gender: userData.gender as 'male' | 'female',
-    //     activity_level: userData.activityLevel,
-    //     goal: userData.goal as 'maintain' | 'weight-loss' | 'muscle',
-    //   })
+        await saveProfile(user.id, {
+          weight: Number(userData.weight),
+          height: Number(userData.height),
+          age: Number(userData.age),
+          gender: userData.gender as 'male' | 'female',
+          activity_level: userData.activityLevel,
+          goal: userData.goal as 'maintain' | 'weight-loss' | 'muscle',
+        })
 
-    //   await AsyncStorage.setItem('nutritionRecommendations', JSON.stringify(recommendations))
-      
+        await AsyncStorage.setItem('nutritionRecommendations', JSON.stringify(recommendations))
+
       Toast.show({
         type: 'success',
         text1: 'Perfil guardado',
-        text2: 'Tus datos se han guardado exitosamente'
-      })
-      
-      onComplete()
-    } catch (error:any) {
+        text2: 'Tus datos se han guardado exitosamente',
+      });
+
+      onComplete();
+    } catch (error: any) {
       Toast.show({
         type: 'error',
         text1: 'Error',
-        text2: 'Error al guardar el perfil: ' + error.message
-      })
-      console.error('Error al guardar el perfil:', error)
+        text2: 'Error al guardar el perfil: ' + error.message,
+      });
+      console.error('Error al guardar el perfil:', error);
     }
-  }
+  };
 
   const isNextDisabled = () => {
-    switch(step) {
-      case 1: return !userData.age || !userData.gender
-      case 2: return !userData.height || !userData.weight
-      case 3: return !userData.activityLevel || !userData.goal
-      default: return false
+    switch (step) {
+      case 1:
+        return !userData.age || !userData.gender;
+      case 2:
+        return !userData.height || !userData.weight;
+      case 3:
+        return !userData.activityLevel || !userData.goal;
+      default:
+        return false;
     }
-  }
+  };
 
   return (
-    <ScrollView 
+    <ScrollView
       contentContainerStyle={{ flexGrow: 1 }}
-      className="bg-gradient-to-b from-blue-100 to-green-100"
-    >
+      className="bg-gradient-to-b from-blue-100 to-green-100">
       <View className="flex-1 justify-center p-6">
-        <View className="bg-white p-8 rounded-xl shadow-lg w-full max-w-md self-center">
+        <View className="w-full max-w-md self-center rounded-xl bg-white p-8 shadow-lg">
           {/* Progress Bar */}
           <View className="mb-8">
-            <View className="flex flex-row justify-between items-center mb-4">
+            <View className="mb-4 flex flex-row items-center justify-between">
               {[1, 2, 3, 4].map((num) => (
                 <View
                   key={num}
-                  className={`w-20 h-2 rounded-full ${
-                    num <= step ? 'bg-blue-600' : 'bg-gray-200'
-                  }`}
+                  className={`h-2 w-20 rounded-full ${num <= step ? 'bg-blue-600' : 'bg-gray-200'}`}
                 />
               ))}
             </View>
@@ -120,53 +121,49 @@ const UserOnboarding: React.FC<UserOnboardingProps> = ({ onComplete }) => {
             {step === 1 && (
               <>
                 <View>
-                  <Text className="block text-sm font-medium text-gray-700 mb-1">
-                    Edad
-                  </Text>
+                  <Text className="mb-1 block text-sm font-medium text-gray-700">Edad</Text>
                   <View className="relative">
-                    <View className="absolute inset-y-0 left-0 pl-3 flex items-center justify-center">
+                    <View className="absolute inset-y-0 left-0 flex items-center justify-center pl-3">
                       <MaterialCommunityIcons name="calendar" size={20} color="#9CA3AF" />
                     </View>
                     <TextInput
                       keyboardType="numeric"
                       value={userData.age}
                       onChangeText={(text) => handleInputChange('age', text)}
-                      className="pl-10 block w-full rounded-lg border border-gray-300 p-3"
+                      className="block w-full rounded-lg border border-gray-300 p-3 pl-10"
                       placeholder="Edad"
                     />
                   </View>
                 </View>
 
                 <View>
-                  <Text className="block text-sm font-medium text-gray-700 mb-1">
-                    Género
-                  </Text>
+                  <Text className="mb-1 block text-sm font-medium text-gray-700">Género</Text>
                   <View className="flex flex-row gap-4">
                     <TouchableOpacity
                       onPress={() => handleInputChange('gender', 'male')}
-                      className={`flex-1 p-3 rounded-lg border ${
+                      className={`flex-1 rounded-lg border p-3 ${
                         userData.gender === 'male'
                           ? 'border-blue-500 bg-blue-50 text-blue-700'
                           : 'border-gray-300'
-                      }`}
-                    >
-                      <Text className={`text-center ${
-                        userData.gender === 'male' ? 'text-blue-700' : 'text-gray-700'
                       }`}>
+                      <Text
+                        className={`text-center ${
+                          userData.gender === 'male' ? 'text-blue-700' : 'text-gray-700'
+                        }`}>
                         Masculino
                       </Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                       onPress={() => handleInputChange('gender', 'female')}
-                      className={`flex-1 p-3 rounded-lg border ${
+                      className={`flex-1 rounded-lg border p-3 ${
                         userData.gender === 'female'
                           ? 'border-blue-500 bg-blue-50 text-blue-700'
                           : 'border-gray-300'
-                      }`}
-                    >
-                      <Text className={`text-center ${
-                        userData.gender === 'female' ? 'text-blue-700' : 'text-gray-700'
                       }`}>
+                      <Text
+                        className={`text-center ${
+                          userData.gender === 'female' ? 'text-blue-700' : 'text-gray-700'
+                        }`}>
                         Femenino
                       </Text>
                     </TouchableOpacity>
@@ -179,36 +176,32 @@ const UserOnboarding: React.FC<UserOnboardingProps> = ({ onComplete }) => {
             {step === 2 && (
               <>
                 <View>
-                  <Text className="block text-sm font-medium text-gray-700 mb-1">
-                    Altura (cm)
-                  </Text>
+                  <Text className="mb-1 block text-sm font-medium text-gray-700">Altura (cm)</Text>
                   <View className="relative">
-                    <View className="absolute inset-y-0 left-0 pl-3 flex items-center justify-center">
+                    <View className="absolute inset-y-0 left-0 flex items-center justify-center pl-3">
                       <FontAwesome name="ruble" size={20} color="#9CA3AF" />
                     </View>
                     <TextInput
                       keyboardType="numeric"
                       value={userData.height}
                       onChangeText={(text) => handleInputChange('height', text)}
-                      className="pl-10 block w-full rounded-lg border border-gray-300 p-3"
+                      className="block w-full rounded-lg border border-gray-300 p-3 pl-10"
                       placeholder="Altura en centímetros"
                     />
                   </View>
                 </View>
 
                 <View>
-                  <Text className="block text-sm font-medium text-gray-700 mb-1">
-                    Peso (kg)
-                  </Text>
+                  <Text className="mb-1 block text-sm font-medium text-gray-700">Peso (kg)</Text>
                   <View className="relative">
-                    <View className="absolute inset-y-0 left-0 pl-3 flex items-center justify-center">
+                    <View className="absolute inset-y-0 left-0 flex items-center justify-center pl-3">
                       <MaterialCommunityIcons name="scale" size={20} color="#9CA3AF" />
                     </View>
                     <TextInput
                       keyboardType="numeric"
                       value={userData.weight}
                       onChangeText={(text) => handleInputChange('weight', text)}
-                      className="pl-10 block w-full rounded-lg border border-gray-300 p-3"
+                      className="block w-full rounded-lg border border-gray-300 p-3 pl-10"
                       placeholder="Peso en kilogramos"
                     />
                   </View>
@@ -220,7 +213,7 @@ const UserOnboarding: React.FC<UserOnboardingProps> = ({ onComplete }) => {
             {step === 3 && (
               <>
                 <View>
-                  <Text className="block text-sm font-medium text-gray-700 mb-3">
+                  <Text className="mb-3 block text-sm font-medium text-gray-700">
                     Nivel de Actividad Física
                   </Text>
                   <View className="space-y-3">
@@ -229,30 +222,41 @@ const UserOnboarding: React.FC<UserOnboardingProps> = ({ onComplete }) => {
                       { value: 'light', label: 'Ligero', desc: 'Ejercicio 1-3 veces/semana' },
                       { value: 'moderate', label: 'Moderado', desc: 'Ejercicio 3-5 veces/semana' },
                       { value: 'active', label: 'Activo', desc: 'Ejercicio 6-7 veces/semana' },
-                      { value: 'veryActive', label: 'Muy Activo', desc: 'Ejercicio intenso diario' }
+                      {
+                        value: 'veryActive',
+                        label: 'Muy Activo',
+                        desc: 'Ejercicio intenso diario',
+                      },
                     ].map((level) => (
                       <TouchableOpacity
                         key={level.value}
                         onPress={() => handleInputChange('activityLevel', level.value)}
-                        className={`w-full flex flex-row items-center p-4 rounded-lg border ${
+                        className={`flex w-full flex-row items-center rounded-lg border p-4 ${
                           userData.activityLevel === level.value
                             ? 'border-blue-500 bg-blue-50'
                             : 'border-gray-300'
-                        }`}
-                      >
-                        <MaterialCommunityIcons name="run" size={20} 
-                          color={userData.activityLevel === level.value ? '#2563EB' : '#6B7280'} 
+                        }`}>
+                        <MaterialCommunityIcons
+                          name="run"
+                          size={20}
+                          color={userData.activityLevel === level.value ? '#2563EB' : '#6B7280'}
                           className="mr-3"
                         />
                         <View>
-                          <Text className={`font-medium ${
-                            userData.activityLevel === level.value ? 'text-blue-700' : 'text-gray-700'
-                          }`}>
+                          <Text
+                            className={`font-medium ${
+                              userData.activityLevel === level.value
+                                ? 'text-blue-700'
+                                : 'text-gray-700'
+                            }`}>
                             {level.label}
                           </Text>
-                          <Text className={`text-sm ${
-                            userData.activityLevel === level.value ? 'text-blue-600' : 'text-gray-500'
-                          }`}>
+                          <Text
+                            className={`text-sm ${
+                              userData.activityLevel === level.value
+                                ? 'text-blue-600'
+                                : 'text-gray-500'
+                            }`}>
                             {level.desc}
                           </Text>
                         </View>
@@ -262,31 +266,33 @@ const UserOnboarding: React.FC<UserOnboardingProps> = ({ onComplete }) => {
                 </View>
 
                 <View>
-                  <Text className="block text-sm font-medium text-gray-700 mb-3">
+                  <Text className="mb-3 block text-sm font-medium text-gray-700">
                     Objetivo Principal
                   </Text>
                   <View className="space-y-3">
                     {[
                       { value: 'maintain', label: 'Mantener peso' },
                       { value: 'weight-loss', label: 'Bajar de peso' },
-                      { value: 'muscle', label: 'Ganar músculo' }
+                      { value: 'muscle', label: 'Ganar músculo' },
                     ].map((goal) => (
                       <TouchableOpacity
                         key={goal.value}
                         onPress={() => handleInputChange('goal', goal.value)}
-                        className={`w-full flex flex-row items-center p-4 rounded-lg border ${
+                        className={`flex w-full flex-row items-center rounded-lg border p-4 ${
                           userData.goal === goal.value
                             ? 'border-blue-500 bg-blue-50'
                             : 'border-gray-300'
-                        }`}
-                      >
-                        <Feather name="target" size={20} 
-                          color={userData.goal === goal.value ? '#2563EB' : '#6B7280'} 
+                        }`}>
+                        <Feather
+                          name="target"
+                          size={20}
+                          color={userData.goal === goal.value ? '#2563EB' : '#6B7280'}
                           className="mr-3"
                         />
-                        <Text className={
-                          userData.goal === goal.value ? 'text-blue-700' : 'text-gray-700'
-                        }>
+                        <Text
+                          className={
+                            userData.goal === goal.value ? 'text-blue-700' : 'text-gray-700'
+                          }>
                           {goal.label}
                         </Text>
                       </TouchableOpacity>
@@ -316,10 +322,9 @@ const UserOnboarding: React.FC<UserOnboardingProps> = ({ onComplete }) => {
               <TouchableOpacity
                 onPress={handleNext}
                 disabled={isNextDisabled()}
-                className={`w-full flex flex-row items-center justify-center py-3 px-4 rounded-lg shadow-sm ${
+                className={`flex w-full flex-row items-center justify-center rounded-lg px-4 py-3 shadow-sm ${
                   isNextDisabled() ? 'bg-blue-300' : 'bg-blue-600'
-                }`}
-              >
+                }`}>
                 <Text className="text-white">
                   {step === 3 ? 'Ver Recomendaciones' : 'Siguiente'}
                 </Text>
@@ -330,7 +335,7 @@ const UserOnboarding: React.FC<UserOnboardingProps> = ({ onComplete }) => {
         </View>
       </View>
     </ScrollView>
-  )
-}
+  );
+};
 
-export default UserOnboarding
+export default UserOnboarding;

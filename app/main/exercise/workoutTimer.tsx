@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
-// import { useWorkoutTrackingStore } from '../../stores/workoutTrackingStore';
-// import { useExerciseStore } from '../../stores/exerciseStore';
+import { useWorkoutTrackingStore } from '../../../stores/workoutTrackingStore';
+import { useExerciseStore } from '../../../stores/exerciseStore';
 import Toast from 'react-native-toast-message';
 import { Feather, MaterialIcons, Ionicons, FontAwesome } from '@expo/vector-icons';
-import { RoutineExercise } from 'types/exercise';
+// import { RoutineExercise } from 'types/exercise';
 
 interface WorkoutTimerProps {
   onFinish: () => void;
@@ -18,129 +18,129 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ onFinish }) => {
   const [currentSet, setCurrentSet] = useState(1);
   const [isResting, setIsResting] = useState(false);
   const [loading, setLoading] = useState(true);
-  //   const { currentWorkout, endWorkout, getTodayWorkouts, getWeeklyWorkouts } =
-  //     useWorkoutTrackingStore();
-  //   const { routineExercises, getRoutineExercises } = useExerciseStore();
-  const currentWorkout = {
-    id: '1',
-    user_id: '123',
-    routine_id: 'r1',
-    tracking_date: new Date().toISOString().split('T')[0],
-    start_time: '08:00',
-    end_time: '08:45',
-    duration: 45,
-    calories_burned: 350,
-    completed: true,
-    notes: 'Buen entrenamiento',
-  }; // Mock current workout data
+  const { currentWorkout, endWorkout, getTodayWorkouts, getWeeklyWorkouts } =
+    useWorkoutTrackingStore();
+  const { routineExercises, getRoutineExercises } = useExerciseStore();
+  // const currentWorkout = {
+  //   id: '1',
+  //   user_id: '123',
+  //   routine_id: 'r1',
+  //   tracking_date: new Date().toISOString().split('T')[0],
+  //   start_time: '08:00',
+  //   end_time: '08:45',
+  //   duration: 45,
+  //   calories_burned: 350,
+  //   completed: true,
+  //   notes: 'Buen entrenamiento',
+  // }; // Mock current workout data
 
-  const routineExercises: Record<string, RoutineExercise[]> = {
-    r1: [
-      {
-        id: 'e1',
-        routine_id: 'r1',
-        exercise_id: 'ex1',
-        order_index: 0,
-        sets: 3,
-        reps: 10,
-        duration: 45,
-        rest_time: 30,
-        exercise: {
-          id: 'ex1',
-          name: 'Push Up',
-          description: 'Push up exercise',
-          category: 'Strength',
-          difficulty: 'principiante',
-          muscles_worked: ['Chest', 'Triceps'],
-          calories_per_minute: 8,
-        },
-      },
-      {
-        id: 'e2',
-        routine_id: 'r1',
-        exercise_id: 'ex2',
-        order_index: 1,
-        sets: 3,
-        reps: 12,
-        duration: 45,
-        rest_time: 30,
-        exercise: {
-          id: 'ex2',
-          name: 'Squat',
-          description: 'Squat exercise',
-          category: 'Strength',
-          difficulty: 'principiante',
-          muscles_worked: ['Legs', 'Glutes'],
-          calories_per_minute: 7,
-        },
-      },
-    ],
-    r2: [
-      {
-        id: 'e3',
-        routine_id: 'r2',
-        exercise_id: 'ex3',
-        order_index: 0,
-        sets: 3,
-        reps: 10,
-        duration: 45,
-        rest_time: 30,
-        exercise: {
-          id: 'ex3',
-          name: 'Lunges',
-          description: 'Lunges exercise',
-          category: 'Strength',
-          difficulty: 'intermedio',
-          muscles_worked: ['Legs', 'Glutes'],
-          calories_per_minute: 7,
-        },
-      },
-      {
-        id: 'e4',
-        routine_id: 'r2',
-        exercise_id: 'ex4',
-        order_index: 1,
-        sets: 3,
-        reps: 30,
-        duration: 45,
-        rest_time: 30,
-        exercise: {
-          id: 'ex4',
-          name: 'Plank',
-          description: 'Plank exercise',
-          category: 'Core',
-          difficulty: 'principiante',
-          muscles_worked: ['Abs', 'Back'],
-          calories_per_minute: 6,
-        },
-      },
-    ],
-  };
+  // const routineExercises: Record<string, RoutineExercise[]> = {
+  //   r1: [
+  //     {
+  //       id: 'e1',
+  //       routine_id: 'r1',
+  //       exercise_id: 'ex1',
+  //       order_index: 0,
+  //       sets: 3,
+  //       reps: 10,
+  //       duration: 45,
+  //       rest_time: 30,
+  //       exercise: {
+  //         id: 'ex1',
+  //         name: 'Push Up',
+  //         description: 'Push up exercise',
+  //         category: 'Strength',
+  //         difficulty: 'principiante',
+  //         muscles_worked: ['Chest', 'Triceps'],
+  //         calories_per_minute: 8,
+  //       },
+  //     },
+  //     {
+  //       id: 'e2',
+  //       routine_id: 'r1',
+  //       exercise_id: 'ex2',
+  //       order_index: 1,
+  //       sets: 3,
+  //       reps: 12,
+  //       duration: 45,
+  //       rest_time: 30,
+  //       exercise: {
+  //         id: 'ex2',
+  //         name: 'Squat',
+  //         description: 'Squat exercise',
+  //         category: 'Strength',
+  //         difficulty: 'principiante',
+  //         muscles_worked: ['Legs', 'Glutes'],
+  //         calories_per_minute: 7,
+  //       },
+  //     },
+  //   ],
+  //   r2: [
+  //     {
+  //       id: 'e3',
+  //       routine_id: 'r2',
+  //       exercise_id: 'ex3',
+  //       order_index: 0,
+  //       sets: 3,
+  //       reps: 10,
+  //       duration: 45,
+  //       rest_time: 30,
+  //       exercise: {
+  //         id: 'ex3',
+  //         name: 'Lunges',
+  //         description: 'Lunges exercise',
+  //         category: 'Strength',
+  //         difficulty: 'intermedio',
+  //         muscles_worked: ['Legs', 'Glutes'],
+  //         calories_per_minute: 7,
+  //       },
+  //     },
+  //     {
+  //       id: 'e4',
+  //       routine_id: 'r2',
+  //       exercise_id: 'ex4',
+  //       order_index: 1,
+  //       sets: 3,
+  //       reps: 30,
+  //       duration: 45,
+  //       rest_time: 30,
+  //       exercise: {
+  //         id: 'ex4',
+  //         name: 'Plank',
+  //         description: 'Plank exercise',
+  //         category: 'Core',
+  //         difficulty: 'principiante',
+  //         muscles_worked: ['Abs', 'Back'],
+  //         calories_per_minute: 6,
+  //       },
+  //     },
+  //   ],
+  // };
 
   const exercises = currentWorkout?.routine_id
     ? routineExercises[currentWorkout.routine_id] || []
     : [];
 
-  const getRoutineExercises = async (routineId: string) => {
-    // Simulate fetching routine exercises from a store or API
-    const fetchedExercises = routineExercises[routineId] || [];
-  };
+  // const getRoutineExercises = async (routineId: string) => {
+  //   // Simulate fetching routine exercises from a store or API
+  //   const fetchedExercises = routineExercises[routineId] || [];
+  // };
 
-  const endWorkout = async (workoutId: string, minutes: number, calories: number) => {
-    // Simulate ending the workout and updating the database
-    console.log(
-      `Workout ${workoutId} ended. Duration: ${minutes} minutes, Calories burned: ${calories}`
-    );
-  };
-  const getTodayWorkouts = async (userId: string) => {
-    // Simulate fetching today's workouts from a store or API
-    console.log(`Fetching today's workouts for user ${userId}`);
-  };
+  // const endWorkout = async (workoutId: string, minutes: number, calories: number) => {
+  //   // Simulate ending the workout and updating the database
+  //   console.log(
+  //     `Workout ${workoutId} ended. Duration: ${minutes} minutes, Calories burned: ${calories}`
+  //   );
+  // };
+  // const getTodayWorkouts = async (userId: string) => {
+  //   // Simulate fetching today's workouts from a store or API
+  //   console.log(`Fetching today's workouts for user ${userId}`);
+  // };
 
-  const getWeeklyWorkouts = async (userId: string) => {
-    // Simulate fetching weekly workouts from a store or API
-    console.log(`Fetching weekly workouts for user ${userId}`);
-  };
+  // const getWeeklyWorkouts = async (userId: string) => {
+  //   // Simulate fetching weekly workouts from a store or API
+  //   console.log(`Fetching weekly workouts for user ${userId}`);
+  // };
 
   useEffect(() => {
     const loadExercises = async () => {
@@ -348,13 +348,15 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ onFinish }) => {
           <Text className="mb-2 text-center text-xl font-semibold">
             {isResting ? 'Descanso' : currentExerciseData?.exercise?.name || 'Preparado'}
           </Text>
-            <View className="mb-4 flex items-center justify-center">
+          <View className="mb-4 flex items-center justify-center">
             <Text className="text-3xl font-bold text-blue-600">{formatTime(seconds)}</Text>
-            <View className="flex-row items-center mt-2">
+            <View className="mt-2 flex-row items-center">
               <Feather name="clock" size={16} color="#6b7280" />
-              <Text className="text-sm text-gray-500 ml-1">{formatTime(restDuration - seconds)} restante</Text>
+              <Text className="ml-1 text-sm text-gray-500">
+                {formatTime(restDuration - seconds)} restante
+              </Text>
             </View>
-            </View>
+          </View>
 
           <View className="mb-6 h-3 w-full rounded-full bg-gray-200">
             <View
@@ -363,50 +365,48 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ onFinish }) => {
             />
           </View>
 
-            <View className="space-y-3">
+          <View className="space-y-3">
             {/* Primera fila: Flecha izquierda, Play/Pause, Flecha derecha */}
             <View className="flex-row items-center justify-center">
               <TouchableOpacity
-              onPress={handlePreviousExercise}
-              disabled={currentExercise === 0}
-              className={`rounded-full p-4 mx-6 ${currentExercise === 0 ? 'bg-gray-300' : 'bg-gray-500'} ${currentExercise === 0 ? '' : 'active:bg-gray-600'}`}>
-              <Feather name="chevron-left" size={24} color="#fff" />
+                onPress={handlePreviousExercise}
+                disabled={currentExercise === 0}
+                className={`mx-6 rounded-full p-4 ${currentExercise === 0 ? 'bg-gray-300' : 'bg-gray-500'} ${currentExercise === 0 ? '' : 'active:bg-gray-600'}`}>
+                <Feather name="chevron-left" size={24} color="#fff" />
               </TouchableOpacity>
 
               <TouchableOpacity
-              onPress={toggleTimer}
-              className={`rounded-full p-4 mx-6 ${isRunning ? 'bg-red-500' : 'bg-green-500'} active:bg-opacity-80`}>
-              {isRunning ? (
-                <Feather name="pause" size={24} color="#fff" />
-              ) : (
-                <Feather name="play" size={24} color="#fff" />
-              )}
+                onPress={toggleTimer}
+                className={`mx-6 rounded-full p-4 ${isRunning ? 'bg-red-500' : 'bg-green-500'} active:bg-opacity-80`}>
+                {isRunning ? (
+                  <Feather name="pause" size={24} color="#fff" />
+                ) : (
+                  <Feather name="play" size={24} color="#fff" />
+                )}
               </TouchableOpacity>
 
               <TouchableOpacity
-              onPress={handleNextExercise}
-              disabled={currentExercise === exercises.length - 1}
-              className={`rounded-full p-4 mx-6 ${currentExercise === exercises.length - 1 ? 'bg-gray-300' : 'bg-gray-500'} ${currentExercise === exercises.length - 1 ? '' : 'active:bg-gray-600'}`}>
-              <Feather name="chevron-right" size={24} color="#fff" />
+                onPress={handleNextExercise}
+                disabled={currentExercise === exercises.length - 1}
+                className={`mx-6 rounded-full p-4 ${currentExercise === exercises.length - 1 ? 'bg-gray-300' : 'bg-gray-500'} ${currentExercise === exercises.length - 1 ? '' : 'active:bg-gray-600'}`}>
+                <Feather name="chevron-right" size={24} color="#fff" />
               </TouchableOpacity>
             </View>
             {/* Segunda fila: Reiniciar y Completar */}
             <View className="flex-row items-center justify-center">
               <TouchableOpacity
-              onPress={resetTimer}
-              className="rounded-full bg-gray-500 p-4 mx-8 active:bg-gray-600"
-              >
-              <Feather name="rotate-ccw" size={24} color="#fff" />
+                onPress={resetTimer}
+                className="mx-8 rounded-full bg-gray-500 p-4 active:bg-gray-600">
+                <Feather name="rotate-ccw" size={24} color="#fff" />
               </TouchableOpacity>
 
               <TouchableOpacity
-              onPress={handleFinishWorkout}
-              className="rounded-full bg-blue-500 p-4 mx-8 active:bg-blue-600"
-              >
-              <Feather name="check-circle" size={24} color="#fff" />
+                onPress={handleFinishWorkout}
+                className="mx-8 rounded-full bg-blue-500 p-4 active:bg-blue-600">
+                <Feather name="check-circle" size={24} color="#fff" />
               </TouchableOpacity>
             </View>
-            </View>
+          </View>
         </View>
 
         <View className="space-y-4">

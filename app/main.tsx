@@ -16,12 +16,12 @@ import {
   AntDesign,
   MaterialIcons,
 } from '@expo/vector-icons';
-// import { useAuthStore } from '../stores/authStore';
-// import { useNutritionGoalsStore } from '../stores/nutritionGoalsStore';
-// import { useMealPlanStore } from '../stores/mealPlanStore';
-// import { useWaterIntakeStore } from '../stores/waterIntakeStore';
-// import { useDailyTrackingStore } from '../stores/dailyTrackingStore';
-// import { checkSupabaseConnection } from '../lib/supabase';
+import { useAuthStore } from '../stores/authStore';
+import { useNutritionGoalsStore } from '../stores/nutritionGoalsStore';
+import { useMealPlanStore } from '../stores/mealPlanStore';
+import { useWaterIntakeStore } from '../stores/waterIntakeStore';
+import { useDailyTrackingStore } from '../stores/dailyTrackingStore';
+import { checkSupabaseConnection } from '../lib/supabase';
 // import WeeklyMealPlanner from './WeeklyMealPlanner';
 // import ExerciseTracker from './ExerciseTracker';
 // import Wellness from './Wellness';
@@ -42,14 +42,14 @@ interface MainScreenProps {
 const MainScreen: React.FC<MainScreenProps> = ({ onLogout }) => {
   const [activeTab, setActiveTab] = useState('resumen');
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  //   const { user, signOut } = useAuthStore();
-  //   const { goals, getGoals } = useNutritionGoalsStore();
-  //   const { meals, getMeals } = useMealPlanStore();
-  //   const { getTodayIntake } = useWaterIntakeStore();
-  //   const { getTodayTracking } = useDailyTrackingStore();
+    const { user, signOut } = useAuthStore();
+    const { goals, getGoals } = useNutritionGoalsStore();
+    const { meals, getMeals } = useMealPlanStore();
+    const { getTodayIntake } = useWaterIntakeStore();
+    const { getTodayTracking } = useDailyTrackingStore();
 
-  const [user, setUser] = useState<any>(null);
-  const [goals, setGoals] = useState<any>(true);
+  // const [user, setUser] = useState<any>(null);
+  // const [goals, setGoals] = useState<any>(true);
 
   const { width } = Dimensions.get('window');
   const isLargeScreen = width >= 1024;
@@ -57,22 +57,22 @@ const MainScreen: React.FC<MainScreenProps> = ({ onLogout }) => {
   useEffect(() => {
     const initializeData = async () => {
       if (user) {
-        // const isConnected = await checkSupabaseConnection();
-        // if (!isConnected) {
-        //   Toast.show({
-        //     type: 'error',
-        //     text1: 'Error de conexión',
-        //     text2: 'Por favor, intenta más tarde.',
-        //   });
-        //   return;
-        // }
+        const isConnected = await checkSupabaseConnection();
+        if (!isConnected) {
+          Toast.show({
+            type: 'error',
+            text1: 'Error de conexión',
+            text2: 'Por favor, intenta más tarde.',
+          });
+          return;
+        }
 
         try {
           await Promise.all([
-            // getGoals(user.id),
-            // getMeals(user.id),
-            // getTodayIntake(user.id),
-            // getTodayTracking(user.id),
+            getGoals(user.id),
+            getMeals(user.id),
+            getTodayIntake(user.id),
+            getTodayTracking(user.id),
           ]);
         } catch (error) {
           console.error('Error loading data:', error);
@@ -90,7 +90,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ onLogout }) => {
 
   const handleLogout = async () => {
     try {
-    //   await signOut();
+      await signOut();
       onLogout();
     } catch (error) {
       console.error('Error al cerrar sesión:', error);
