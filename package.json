@@ -15,6 +15,7 @@
     "@react-native-async-storage/async-storage": "2.1.2",
     "@supabase/supabase-js": "^2.49.4",
     "expo": "^53.0.9",
+    "expo-dev-client": "~5.1.8",
     "expo-router": "~5.0.6",
     "expo-sharing": "^13.1.5",
     "expo-status-bar": "~2.2.3",
@@ -31,7 +32,8 @@
     "react-native-web": "^0.20.0",
     "uuid": "^11.1.0",
     "xlsx": "^0.18.5",
-    "zustand": "^5.0.4"
+    "zustand": "^5.0.4",
+    "react-native-svg": "15.11.2"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",
