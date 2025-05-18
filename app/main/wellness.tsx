@@ -109,7 +109,6 @@ const Wellness: React.FC = () => {
         backgroundColor: '#fff',
         minHeight: '100%',
       }}>
-      {/* Header */}
       <View style={{ alignItems: 'center', marginBottom: 32 }}>
         <Text
           style={{
@@ -124,8 +123,6 @@ const Wellness: React.FC = () => {
           Toma un momento para respirar y encontrar tu calma interior
         </Text>
       </View>
-
-      {/* Sección Principal de Respiración */}
       <View
         style={{
           backgroundColor: '#f5f3ff',
@@ -256,8 +253,6 @@ const Wellness: React.FC = () => {
           </View>
         </View>
       </View>
-
-      {/* Ejercicios de Respiración */}
       <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}>
         {BREATHING_EXERCISES.map((exercise) => (
           <Pressable
@@ -320,8 +315,6 @@ const Wellness: React.FC = () => {
           </Pressable>
         ))}
       </View>
-
-      {/* Footer */}
       <View style={{ alignItems: 'center', paddingTop: 16 }}>
         <View style={{ padding: 12, backgroundColor: '#f3e8ff', borderRadius: 999 }}>
           <Feather name="heart" size={20} color="#a78bfa" />

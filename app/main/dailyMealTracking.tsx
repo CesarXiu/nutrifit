@@ -121,7 +121,7 @@ const DailyMealTracking: React.FC = () => {
                 <View className="flex-row items-center">
                   <Text className="font-medium">{meal.meal_name}</Text>
                   <Text className="ml-2 text-sm text-gray-500">
-                    ({getMealTypeLabel(meal.meal_type)})
+                    {getMealTypeLabel(meal.meal_type)}
                   </Text>
                 </View>
                 <Text className="text-sm text-gray-600">

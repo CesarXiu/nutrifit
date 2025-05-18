@@ -271,7 +271,6 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ onFinish }) => {
           </View>
 
           <View className="space-y-3">
-            {/* Primera fila: Flecha izquierda, Play/Pause, Flecha derecha */}
             <View className="flex-row items-center justify-center">
               <TouchableOpacity
                 onPress={handlePreviousExercise}
@@ -297,7 +296,6 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ onFinish }) => {
                 <Feather name="chevron-right" size={24} color="#fff" />
               </TouchableOpacity>
             </View>
-            {/* Segunda fila: Reiniciar y Completar */}
             <View className="flex-row items-center justify-center">
               <TouchableOpacity
                 onPress={resetAll}
@@ -327,7 +325,7 @@ const WorkoutTimer: React.FC<WorkoutTimerProps> = ({ onFinish }) => {
                 <View>
                   <Text className="font-medium">{exercise.exercise?.name}</Text>
                   <Text className="text-sm text-gray-500">
-                    {exercise.sets} series × {exercise.reps || `${exercise.duration}s`}
+                    {exercise.sets} series x {exercise.reps || `${exercise.duration}s`}
                   </Text>
                 </View>
               </View>

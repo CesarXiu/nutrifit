@@ -37,21 +37,21 @@ const Login: React.FC<LoginProps> = ({ onLogin, onSwitchToRegister }) => {
 
   return (
     <ScrollView
-      contentContainerStyle={{ flexGrow: 1, paddingVertical: 20 }} // Añadido paddingVertical para más espacio
+      contentContainerStyle={{ flexGrow: 1, paddingVertical: 20 }}
       keyboardShouldPersistTaps="handled"
       className="bg-gradient-to-b from-blue-100 to-green-100">
       <View className="flex-1 justify-center p-6">
         <View className="w-full max-w-md self-center rounded-xl bg-white p-8 shadow-lg">
-          <Text className="mb-8 text-center text-3xl font-bold text-gray-800"> {/* Cambiado mb-6 a mb-8 */}
+          <Text className="mb-8 text-center text-3xl font-bold text-gray-800">
             Bienvenido a NutriFit
           </Text>
-          <Text className="mb-10 text-center text-gray-600"> {/* Cambiado mb-8 a mb-10 */}
+          <Text className="mb-10 text-center text-gray-600">
             Tu compañero en el camino hacia una vida saludable
           </Text>
 
-          <View className="space-y-8"> {/* Cambiado space-y-6 a space-y-8 */}
+          <View className="space-y-8">
             <View>
-              <Text className="mb-2 block text-sm font-medium text-gray-700"> {/* Cambiado mb-1 a mb-2 */}
+              <Text className="mb-2 block text-sm font-medium text-gray-700">
                 Correo electrónico
               </Text>
               <View className="relative">
@@ -71,7 +71,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onSwitchToRegister }) => {
               </View>
             </View>
             <View>
-              <Text className="mb-2 mt-2 block text-sm font-medium text-gray-700"> {/* Cambiado mb-1 a mb-2 */}
+              <Text className="mb-2 mt-2 block text-sm font-medium text-gray-700">
                 Contraseña
               </Text>
               <View className="relative">
@@ -90,10 +90,9 @@ const Login: React.FC<LoginProps> = ({ onLogin, onSwitchToRegister }) => {
               </View>
             </View>
 
-            <View className="flex flex-row items-center justify-between my-4"> {/* Añadido my-4 para más espaciado */}
+            <View className="flex flex-row items-center justify-between my-4">
               <View className="flex flex-row items-center">
                 <TouchableOpacity className="mr-2 h-4 w-4 rounded border border-gray-300 bg-white">
-                  {/* Checkbox would need custom implementation */}
                 </TouchableOpacity>
                 <Text className="text-sm text-gray-700">Recordarme</Text>
               </View>
@@ -125,7 +124,7 @@ const Login: React.FC<LoginProps> = ({ onLogin, onSwitchToRegister }) => {
             </TouchableOpacity>
           </View>
 
-          <View className="mt-10"> {/* Cambiado mt-6 a mt-10 */}
+          <View className="mt-10">
             <View className="relative">
               <View className="absolute inset-0 flex items-center">
                 <View className="w-full border-t border-gray-300"></View>

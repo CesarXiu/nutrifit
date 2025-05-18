@@ -143,16 +143,20 @@ const Recipes: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Recetas Saludables</Text>
-      <TextInput
-        style={styles.searchInput}
-        placeholder="Buscar recetas..."
-        value={searchTerm}
-        onChangeText={handleSearch}
-      />
       <FlatList
         data={recipes}
         keyExtractor={(item) => item.id.toString()}
+        ListHeaderComponent={
+          <>
+            <Text style={styles.title}>Recetas Saludables</Text>
+            <TextInput
+              style={styles.searchInput}
+              placeholder="Buscar recetas..."
+              value={searchTerm}
+              onChangeText={handleSearch}
+            />
+          </>
+        }
         renderItem={({ item }) => (
           <View style={styles.recipeCard}>
             <Image source={{ uri: item.image }} style={styles.recipeImage} />
@@ -168,10 +172,9 @@ const Recipes: React.FC = () => {
           </View>
         )}
       />
-      {/* Modal para mostrar RecipeDetail */}
       {selectedRecipe && (
         <Modal
-          visible={!!selectedRecipe}
+          visible={true}
           animationType="slide"
           transparent={true}
           onRequestClose={handleCloseRecipe}>
